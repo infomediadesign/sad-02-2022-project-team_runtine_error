@@ -42,23 +42,23 @@ app.post('/register',async (req,res)=>{
     res.send('New user created');
 })
 
-app.get('/loggedcheck',(req,res)=>{
-    console.log(req.headers);
-    const check = req.headers.auth_token;
-    const verified = jwt.verify(check, process.env.TOKEN_SECRET);
-    console.log(verified);
-    const loggedUSer = users.find(user=>user.username===verified.username);
-    //console.log(loggedUSer);
-    res.write(`${loggedUSer.username} logged in!`);
-})
-app.post('/login',(req,res)=>{
-    console.log(req.body);
+// app.get('/loggedcheck',(req,res)=>{
+//     console.log(req.headers);
+//     const check = req.headers.auth_token;
+//     const verified = jwt.verify(check, process.env.TOKEN_SECRET);
+//     console.log(verified);
+//     const loggedUSer = users.find(user=>user.username===verified.username);
+//     //console.log(loggedUSer);
+//     res.write(`${loggedUSer.username} logged in!`);
+// })
+// app.post('/login',(req,res)=>{
+//     console.log(req.body);
 
-    users.find(user=>user.username===req.body.username)
-    if(req.body.username ==='banerjab' && req.body.password === 'abcd'){
-        let username = req.body.username;
-    const token = jwt.sign({username},token_secret);
-    // res.sendFile(__dirname+'/www/logged.html')
-    return res.header('auth-token', token).send('logged.html');
-    }
-})
+//     users.find(user=>user.username===req.body.username)
+//     if(req.body.username ==='banerjab' && req.body.password === 'abcd'){
+//         let username = req.body.username;
+//     const token = jwt.sign({username},token_secret);
+//     // res.sendFile(__dirname+'/www/logged.html')
+//     return res.header('auth-token', token).send('logged.html');
+//     }
+// })
