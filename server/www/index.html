@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple login</title>
+</head>
+<body>
+    <h1>Welcome to the login page</h1>
+    <div id="login">
+        <label>Enter username:</label><input type="text" id="username">
+        <label>Enter password:</label><input type="password" id="password">
+        <button id = 'submit'>Submit</button>
+        <a href="./register.html">Register</a>
+    </div>
+    <script>
+        const token = window.localStorage.getItem('auth-token');
+        console.log(token);
+        const checkLogged=()=>{
+            if(token!=null){
+                const options = {
+                    method:'GET',
+                    headers:{
+                        'auth_token': token
+                    }
+                }
+                fetch('/loggedcheck',options).then(data=>console.log(data));
+            }
+        }
+        checkLogged();
+        document.getElementById('submit').addEventListener('click', ()=>{
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const data = {username, password};
+            const options = {
+                method:'POST',
+                headers:{
+                    'Content-type': 'Application/json'
+                },
+                body:JSON.stringify(data)
+            }
+            fetch('/login', options).then(data=>{
+                console.log(data); 
+                console.log(data.headers.get('auth-token'));
+                window.localStorage.clear();
+                window.localStorage.setItem('auth-token', data.headers.get('auth-token'));
+                // window.location.replace(data.url)
+            });
+        })
+    </script>
+</body>
+</html>
