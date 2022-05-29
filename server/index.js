@@ -15,7 +15,7 @@ async function testconn(){
     const session = driver.session();
     const resp = await session.run('MATCH (p) RETURN (p)');
     const allRecords=[];
-    resp.records.forEach(rec=>allRecords.push(rec._fields[0].properties.username));
+    resp.records.forEach(rec=>allRecords.push(rec._fields[0].properties.name));
     console.table(allRecords);
     session.close();
 }
@@ -36,10 +36,29 @@ app.post('/register',async (req,res)=>{
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password,salt);
     const ses = driver.session();
-    const newUser = await ses.run(`CREATE (P:Person{name:"${name}", username:"${username}",password:"${hashedPassword}", email:"${email}", gender:"${gender}", lat:${lat}, lon:${lon} })`)
+    const newUser = await ses.run(`CREATE (P:Person{name:"${name}", username:"${username}",
+    password:"${hashedPassword}", email:"${email}", gender:"${gender}", lat:${lat}, lon:${lon} })`)
     console.log(newUser);
     ses.close();
     res.send('New user created');
+})
+
+app.post('/interests',async (req,res)=>{
+    const interestArray=[];
+    const name = req.body.name;
+    const interestedIn = req.body.interest;
+    const ses = driver.session();
+    const resp = await ses.run(`MATCH(I:Interest) RETURN (I)`);
+    resp.records.forEach(rec=>interestArray.push(rec._fields[0].properties.name));
+    const intPresent = interestArray.findIndex(rec=>rec===interestedIn);
+    if(intPresent===-1){
+        const newInterest = await ses.run(`CREATE (I:Interest{name:'${interestedIn}'}) RETURN (I)`);
+        console.log(newInterest);
+    }
+    const intUpdate = await ses.run(`MATCH (P:Person{username:'${name}'}),
+    (I:Interest{name:'${interestedIn}'}) CREATE (P)-[:Interested]->(I)`);
+    console.log(intUpdate);
+    return res.send('Created');
 })
 
 // app.get('/loggedcheck',(req,res)=>{
