@@ -8,7 +8,23 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const neo = require('neo4j-driver');
 const bcrypt = require('bcrypt');
+const Joi  = require('joi');
 
+const validation = (req,res,next)=>{
+    const schema = Joi.object({
+        username: Joi.string().required().min(5).max(8),
+        password: Joi.string().alphanum().required().min(6).max(12),
+        //repeat_password: Joi.ref('password'),
+        email: Joi.string().email().required(),
+        name: Joi.string().required(),
+        lat:Joi.number(),
+        lon: Joi.number(),
+        gender: Joi.string().max(1).required()       
+    })
+    const {error} = schema.validate(req.body);
+    if(error) return res.send(error.details[0].message);
+    next();
+}
 const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
 
 async function testconn(){
@@ -25,7 +41,7 @@ testconn();
 app.listen(3000);
 let token_secret = process.env.TOKEN_SECRET;
 
-app.post('/register',async (req,res)=>{
+app.post('/register',validation ,async (req,res)=>{
     const name = req.body.name;
     const password = req.body.password;
     const username = req.body.username;
@@ -36,12 +52,39 @@ app.post('/register',async (req,res)=>{
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password,salt);
     const ses = driver.session();
+    const existingCheck = await ses.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
+    if(existingCheck.records.length>0){
+        console.log(existingCheck.records[0]._fields);
+        if(existingCheck.records[0]._fields[0]===req.body.username)
+        return res.send('Username already in use.');
+        else
+        return res.send('Email id already in use.');
+    }
     const newUser = await ses.run(`CREATE (P:Person{name:"${name}", username:"${username}",
     password:"${hashedPassword}", email:"${email}", gender:"${gender}", lat:${lat}, lon:${lon} })`)
     console.log(newUser);
     ses.close();
     res.send('New user created');
 })
+
+app.post('/findbyinterest',async(req,res)=>{
+    const interests = req.body.interests;
+    // console.table(interests);
+    let queryInt = `I.name = '${interests[0]}'`;
+    if (interests.length > 1){
+        for(let i=1;i<interests.length;i++){
+            queryInt = queryInt+` OR I.name = '${interests[i]}'`;
+        }
+    }
+    const finalQuery = `MATCH (P:Person)-[:Interested] ->(I:Interest) WHERE ${queryInt} RETURN (P.name),(I.name)`;
+    const session = driver.session();
+    const reply = await session.run(`${finalQuery}`);
+    reply.records.forEach(record=>console.log(record._fields));
+    session.close();
+    // console.log(reply.records[0]._fields);
+    res.send('OK');
+})
+
 
 app.post('/interests',async (req,res)=>{
     const interestArray=[];
@@ -57,8 +100,19 @@ app.post('/interests',async (req,res)=>{
     }
     const intUpdate = await ses.run(`MATCH (P:Person{username:'${name}'}),
     (I:Interest{name:'${interestedIn}'}) CREATE (P)-[:Interested]->(I)`);
+    ses.close();
     console.log(intUpdate);
     return res.send('Created');
+})
+
+
+app.post('/personsinterests',async(req,res)=>{
+    const person = req.body.person;
+    const session = driver.session();
+    const response=[];
+    const interests = await session.run(`MATCH(P:Person{username:'${person}'}) - [:Interested] -> (I:Interest) RETURN (I)`);
+    interests.records.forEach(record=> response.push(record._fields[0].properties.name));
+    return res.send(`${person} is interested in: ${response}`);
 })
 
 // app.get('/loggedcheck',(req,res)=>{
