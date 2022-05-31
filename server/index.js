@@ -69,7 +69,7 @@ app.post('/register',validation ,async (req,res)=>{
 
 app.post('/findbyinterest',async(req,res)=>{
     const interests = req.body.interests;
-    // console.table(interests);
+    const intArr =[];
     let queryInt = `I.name = '${interests[0]}'`;
     if (interests.length > 1){
         for(let i=1;i<interests.length;i++){
@@ -79,10 +79,9 @@ app.post('/findbyinterest',async(req,res)=>{
     const finalQuery = `MATCH (P:Person)-[:Interested] ->(I:Interest) WHERE ${queryInt} RETURN (P.name),(I.name)`;
     const session = driver.session();
     const reply = await session.run(`${finalQuery}`);
-    reply.records.forEach(record=>console.log(record._fields));
+    reply.records.forEach(record=>intArr.push(record._fields));
     session.close();
-    // console.log(reply.records[0]._fields);
-    res.send('OK');
+    res.send(intArr);
 })
 
 
