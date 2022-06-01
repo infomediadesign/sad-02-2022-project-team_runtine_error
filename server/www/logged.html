@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome</h1><a href="#" id="logout">Log out</a>
+    <div id="userdetails"></div>
+    <script>
+        const token = window.localStorage.getItem('auth-token');
+        console.log(token);
+        const checkLogged=()=>{
+            if(token!=null){
+                const options = {
+                    method:'GET',
+                    headers:{
+                        'auth_token': token
+                    }
+                }
+                fetch('/profile',options).then(data=>data.json()).then(data=>{
+                    const detailsDiv = document.querySelector('#userdetails');
+                    const userDetails = document.createElement('h3');
+                    userdetails.innerHTML = `Name: ${data.name} \n Email: ${data.email}`
+                    detailsDiv.append(userDetails);
+                });
+            }
+        }
+        checkLogged();
+        const logoutLink = document.getElementById('logout');
+        logoutLink.addEventListener('click',()=>{
+            window.localStorage.clear();
+            window.location = 'index.html';
+        })
+    </script>
+</body>
+</html>

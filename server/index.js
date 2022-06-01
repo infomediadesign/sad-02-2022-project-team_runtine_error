@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 // app.use(cors());
-app.use(express.static('www'));
+app.use(express.static('server/www'));
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const neo = require('neo4j-driver');
@@ -39,7 +39,6 @@ async function testconn(){
 testconn();
 
 app.listen(3000);
-let token_secret = process.env.TOKEN_SECRET;
 
 app.post('/register',validation ,async (req,res)=>{
     const name = req.body.name;
@@ -95,12 +94,10 @@ app.post('/interests',async (req,res)=>{
     const intPresent = interestArray.findIndex(rec=>rec===interestedIn);
     if(intPresent===-1){
         const newInterest = await ses.run(`CREATE (I:Interest{name:'${interestedIn}'}) RETURN (I)`);
-        console.log(newInterest);
     }
     const intUpdate = await ses.run(`MATCH (P:Person{username:'${name}'}),
     (I:Interest{name:'${interestedIn}'}) CREATE (P)-[:Interested]->(I)`);
     ses.close();
-    console.log(intUpdate);
     return res.send('Created');
 })
 
@@ -114,23 +111,36 @@ app.post('/personsinterests',async(req,res)=>{
     return res.send(`${person} is interested in: ${response}`);
 })
 
-// app.get('/loggedcheck',(req,res)=>{
-//     console.log(req.headers);
-//     const check = req.headers.auth_token;
-//     const verified = jwt.verify(check, process.env.TOKEN_SECRET);
-//     console.log(verified);
-//     const loggedUSer = users.find(user=>user.username===verified.username);
-//     //console.log(loggedUSer);
-//     res.write(`${loggedUSer.username} logged in!`);
-// })
-// app.post('/login',(req,res)=>{
-//     console.log(req.body);
 
-//     users.find(user=>user.username===req.body.username)
-//     if(req.body.username ==='banerjab' && req.body.password === 'abcd'){
-//         let username = req.body.username;
-//     const token = jwt.sign({username},token_secret);
-//     // res.sendFile(__dirname+'/www/logged.html')
-//     return res.header('auth-token', token).send('logged.html');
-//     }
-// })
+app.get('/loggedcheck',async (req,res)=>{
+    const check = req.headers.auth_token;
+    const verified = jwt.verify(check, process.env.TOKEN_SECRET);
+    const session = driver.session();
+    const loggedUser = await session.run(`MATCH (P:Person{username:'${verified}'}) RETURN (P.name)`);
+    session.close();
+    //res.write(`${loggedUser.records[0]._fields[0]} logged in!`);
+    return res.redirect('logged.html');
+})
+
+app.get('/profile', async(req,res)=>{
+    const profile =req.headers.auth_token;
+    const verify = jwt.verify(profile, process.env.TOKEN_SECRET);
+    const session = driver.session();
+    const user = await session.run(`MATCH (P{username:'${verify}'}) RETURN (P)`);
+    session.close();
+    return res.send(user.records[0]._fields[0].properties);
+})
+
+
+app.post('/login',async (req,res)=>{
+    const token_secret = process.env.TOKEN_SECRET;
+    const session = driver.session();
+    const reply = await session.run(`MATCH (P{username: '${req.body.username}'}) RETURN (P.password)`);
+    const pass =  reply.records[0]._fields[0];
+    const passVerify = await bcrypt.compare(req.body.password,pass);
+    if(passVerify){
+        const token = jwt.sign(req.body.username,token_secret);
+        return res.header('auth-token', token).send('logged.html');
+}
+    session.close();
+})
