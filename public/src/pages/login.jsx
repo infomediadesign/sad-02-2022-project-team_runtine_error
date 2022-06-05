@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../assets/logo.svg";
 import { loginRoute } from "../utils/APIRoutes";
 import {ToastContainer, toast} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import LoginLogo from './LoginLogo.png';
+import Main from './Main.jpg';
+import Logo from './Logo.jpg';
+import './login.css'
+
 import axios from 'axios';
 
 export default function Login() {
@@ -69,27 +71,38 @@ export default function Login() {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
     return (
-        <>
-        <FormContainer>
+          <>
+    
+       <div className="content">
+           <div className='tagline'>Connection without conversation is impossible!</div>
+            <img class="Logo" src={Logo} />
+            <img class="BackgroundImage" src={Main} />
+            <div className="login">
             <form onSubmit={(event)=>handleSubmit(event)}>
-                <div className="brand">
-                    <img src={Logo} alt="Logo" />
-                    <h1>ChatApp</h1>
-                </div>
-                <input type="text" placeholder="Username" name="username" min="3" onChange={(e) => handleChange(e)}/>
-                <input type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}/>
-                <button type="submit">Login</button>
+                <img class="LoginLogo" src={LoginLogo} />
+                <label>Username</label>
+                <input type="text" placeholder="Username" name="username" min="3" style={{marginTop:"45%", marginLeft:"10px"}} onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>Password</label>
+                <input type="password" placeholder="password" name="password" style={{marginTop:"5%", marginLeft:"13.5px"}} onChange={(e) => handleChange(e)}/><br></br>
+                <Link to="/forgotPassword" style={{marginRight:"53%", marginTop:"20%", fontSize:"14px"}}>Forgot Password?</Link>
+                <br></br>
+                <button type="submit" >Login</button>
                 <span>
-                    Create new account<Link to="/register">Register.</Link>
+                    Don't have an account?<Link to="/register">Create Account</Link>
                 </span>
             </form>
-        </FormContainer>
-        <ToastContainer />
+            
+            </div>
+
+        </div>
+    
         </>
+
     )
 }
 
-const FormContainer = styled.div`
+/*const FormContainer = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -116,43 +129,5 @@ const FormContainer = styled.div`
         flex-direction: column;
         gap: 2rem;
         background-color: #003B46;
-        border-radius: 2rem;
-        padding: 3rem 5rem;
-    }
-    input {
-        background-color: #97D5E0;
-        padding: 1rem;
-        border: 0.1rem solid #07575B;
-        border-radius: 0.4rem;
-        color: black;
-        width: 100%;
-        font-size: 1rem;
-        &:focus {
-            border: 0.1rem solid #C4DFE6;
-            outline: none;
-        }
-    }
-    button {
-        background-color: #4e0eff;
-        color: white;
-        padding: 1rem 2rem;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 0.4rem;
-        font-size: 1rem;
-        text-transform: uppercase;
-        &:hover {
-            background-color: green;
-        }
-    }
-    span {
-        color: white;
-        text-transform: uppercase;
-        a {
-            color: #4e0eff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    }
-`;
+    
+`; */
