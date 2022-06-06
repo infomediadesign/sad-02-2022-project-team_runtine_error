@@ -28,7 +28,7 @@ export default function SetAvatar() {
     useEffect(()=>{
         var fnc1 = async function(){
             if(!localStorage.getItem("chatapp-user")){
-                navigate("/login");
+                navigate("/");
             }
         };
         fnc1();
@@ -46,7 +46,7 @@ export default function SetAvatar() {
                 user.isAvatarImageSet = true;
                 user.avatarImage = data.image;
                 localStorage.setItem("chatapp-user",JSON.stringify(user));
-                navigate('/');
+                navigate('/Chat');
             }
             else{
                 toast.error("Error setting avatar. Please try again", toastOptions)

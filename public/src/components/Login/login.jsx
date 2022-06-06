@@ -42,7 +42,7 @@ export default function Login() {
             if(data.status === true){
                 localStorage.setItem('chatapp-user',JSON.stringify(data.user))
                 //& user to local storage and navigate to the chat container
-                navigate("/");
+                navigate("/Chat");
             }
         }
     };
@@ -74,16 +74,16 @@ export default function Login() {
     
        <div className="content">
            <div className='tagline'>Connection without conversation is impossible!</div>
-            <img class="BackgroundImage" src={Main} />
+            <img className="BackgroundImage" src={Main} />
             <div className="login">
             <form onSubmit={(event)=>handleSubmit(event)}>
                 <img class="LoginLogo" src={LoginLogo} />
-                <label>Username</label>
-                <input type="text" placeholder="Username" name="username" min="3" style={{marginTop:"45%", marginLeft:"10px"}} onChange={(e) => handleChange(e)}/>
+                <label className="username">Username</label>
+                <input className="loginInput" type="text" placeholder="Username" name="username" min="3" onChange={(e) => handleChange(e)}/>
                 <br></br>
-                <label>Password</label>
-                <input type="password" placeholder="password" name="password" style={{marginTop:"5%", marginLeft:"13.5px"}} onChange={(e) => handleChange(e)}/><br></br>
-                <Link to="/forgotPassword" style={{marginRight:"53%", marginTop:"20%", fontSize:"14px"}}>Forgot Password?</Link>
+                <label className="password">Password</label>
+                <input className="loginInput" type="password" placeholder="Password" name="password" onChange={(e) => handleChange(e)}/><br></br>
+                <Link to="/forgotPassword" style={{marginRight:"26%", marginTop:"30%", fontSize:"14px"}}>Forgot Password?</Link>
                 <br></br>
                 <button type="submit" >Login</button>
                 <span>
