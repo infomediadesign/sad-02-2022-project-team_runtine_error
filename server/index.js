@@ -14,11 +14,13 @@ const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'
 
 const validation = (req,res,next)=>{
     const schema = Joi.object({
+        firstName:Joi.string().required(),
+        lastName:Joi.string().required(),
         username: Joi.string().required().min(5).max(8),
         password: Joi.string().alphanum().required().min(6).max(12),
         //repeat_password: Joi.ref('password'),
         email: Joi.string().email().required(),
-        address: Joi.string().required()
+        city: Joi.string().required()
 
     })
     const {error} = schema.validate(req.body);
@@ -31,7 +33,7 @@ const validation = (req,res,next)=>{
 
 app.post('/register', async(req,res)=>{
     console.log(req.body);
-    const {username, password, email, address} = req.body;
+    const {username, password, email, firstName, lastName, city} = req.body;
     const session = driver.session();
     const existingCheck = await session.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
     if(existingCheck.records.length>0){
@@ -52,7 +54,7 @@ app.post('/register', async(req,res)=>{
     return res.json({status:true, user});
 })
 
-app.post('/login', async(req,res)=>{
+app.post('/', async(req,res)=>{
     const {username, password} =req.body;
     const session = driver.session();
     const loginCreds = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P.password)`)
