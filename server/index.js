@@ -59,7 +59,8 @@ app.post('/login', async(req,res)=>{
         return res.json({message:"Invalid username", status:false});
     }
     const hashedPassword = loginCreds.records[0]._fields[0];
-    const passCheck = bcrypt.compare(password,hashedPassword);
+    const passCheck = await bcrypt.compare(password,hashedPassword);
+    console.log(passCheck);
     if(!passCheck){
         return res.json({message:"Incorrect password", status:false});
     }
