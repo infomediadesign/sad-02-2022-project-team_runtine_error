@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const neo = require('neo4j-driver');
-const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
+const jwt = require('jsonwebtoken')
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -12,26 +12,12 @@ app.listen(5000,()=>{
 });
 const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
 
-const validation = (req,res,next)=>{
-    const schema = Joi.object({
-        username: Joi.string().required().min(5).max(8),
-        password: Joi.string().alphanum().required().min(6).max(12),
-        //repeat_password: Joi.ref('password'),
-        email: Joi.string().email().required(),
-        address: Joi.string().required()
-
-    })
-    const {error} = schema.validate(req.body);
-    if(error) return res.send(error.details[0].message);
-    next();
-}
-
 
 
 
 app.post('/register', async(req,res)=>{
     console.log(req.body);
-    const {username, password, email, address} = req.body;
+    const {username, password, email, firstName, lastName, city} = req.body;
     const session = driver.session();
     const existingCheck = await session.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
     if(existingCheck.records.length>0){
@@ -54,6 +40,7 @@ app.post('/register', async(req,res)=>{
 
 app.post('/login', async(req,res)=>{
     const {username, password} =req.body;
+    const tokenSecret = process.env.TOKEN_SECRET;
     const session = driver.session();
     const loginCreds = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P.password)`)
     if (loginCreds.records.length===0){
@@ -66,8 +53,10 @@ app.post('/login', async(req,res)=>{
         return res.json({message:"Incorrect password", status:false});
     }
     const reply  = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P)`);
+    const token = jwt.sign(username, tokenSecret);
     const user = reply.records[0]._fields[0].properties;
     session.close();
+    user.token = token;
     delete user.password;
     return res.json({status:true, user});
 })
@@ -92,6 +81,18 @@ app.get('/allusers/:id', async(req,res)=>{
         delete userData.password;
         users.push(userData);
     }
+    session.close();
     //console.log(users);
     return res.json(users);
+})
+
+app.get('getuser', async(req, res)=>{
+    const {savedToken} = req.body;
+    const username = jwt.verify(savedToken, tokenSecret);
+    const session = driver.session();
+    const reply = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P)`);
+    const user = reply.records[0]._fields[0].properties;
+    session.close();
+    delete user.password;
+    return res.json(user);
 })

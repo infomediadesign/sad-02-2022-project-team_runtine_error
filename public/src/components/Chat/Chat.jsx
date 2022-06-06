@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import { allUsersRoute } from '../../utils/APIRoutes';
+import { allUsersRoute,currentUser } from '../../utils/APIRoutes';
 import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
@@ -30,7 +30,12 @@ export default function Chat() {
                 navigate("/login");
             }
             else{
-                setCurrentUser(await JSON.parse(localStorage.getItem("chatapp-user")));
+                const savedToken = localStorage.getItem("chatapp-user");
+                const userDetails = axios.get(currentUser, {
+                    savedToken
+                }) 
+                setCurrentUser (await JSON.parse(userDetails));
+                //setCurrentUser(await JSON.parse(localStorage.getItem("chatapp-user")));
                 setIsLoaded(true);
             }
         };

@@ -5,4 +5,4 @@ export const SetAvatarRouter = `${host}/setAvatar`;
 //^ get all contacts from database 
 export const ChatRouter = `${host}/Chat`;
 export const allUsersRoute = `${host}/allusers`;
-
+export const currentUser = `${host}/getuser`;
