@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../assets/logo.svg";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //^ axios for api calling && we can call fetch api by script
 import axios from 'axios';
-import { registerRoute } from "../utils/APIRoutes";
+import { registerRoute } from "../../utils/APIRoutes";
+import './register.css';
+import Main from './Main.jpg';
 
 function Register() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
+        firstName: "",
+        lastName: "",
         username: "",
         email: "",
+        city: "",
         password: "",
         confirmPassword: "",
-        address:"",
     });
     const toastOptions={
         position:"bottom-right",
@@ -45,13 +47,13 @@ function Register() {
             if(data.status === true){
                 localStorage.setItem('chatapp-user',JSON.stringify(data.user));
                 //& user to local storage and navigate to the chat container
-                navigate("/");
+                navigate("/Chat");
             }
         }
     };
 
     const handleValidation = ()=>{
-        const {password,confirmPassword, username, email, address}= values;
+        const {password,confirmPassword, username, email, city}= values;
         console.log("in validation",toast);
         if (password !== confirmPassword) {
             toast.error(
@@ -75,7 +77,7 @@ function Register() {
             toast.error("email is required",toastOptions);
             return false;
         }
-        else if(address===""){
+        else if(city===""){
             toast.error("address is required",toastOptions);
             return false;
         }
@@ -85,94 +87,44 @@ function Register() {
     const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
+    
     return (
         <>
-        <FormContainer>
+        <img class="BackgroundImage" src={Main} />
+            <div className="register">
+                <h3>Register</h3>
             <form onSubmit={(event)=>handleSubmit(event)}>
-                <div className="brand">
-                </div>
+                <label>First Name</label>
+                <input type="text" placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>Last Name</label>
+                <input type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>Username</label>
                 <input type="text" placeholder="Username" name="username" onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>City</label>
+                <input type="text" placeholder="City" name="city" onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>Email ID</label>
                 <input type="email" placeholder="Email" name="email" onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>Password</label>
                 <input type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}/>
+                <br></br>
+                <label>Confirm Password</label>
                 <input type="password" placeholder="confirm password" name="confirmPassword" onChange={(e) => handleChange(e)}/>
-                <input type="address" placeholder="Address" name="address" onChange={(e) => handleChange(e)}/>
-                <button type="submit">Create User</button>
+                <br></br>
+                <button type="submit">Sign Up</button>
                 <span>
                     Already have an account ? <Link to="/login">Login.</Link>
-                </span>
+                </span>     
             </form>
-        </FormContainer>
+            </div>     
         <ToastContainer />
         </>
     )
 }
 
-const FormContainer = styled.div`
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
-    background-color: #07575B;
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        justify-content: center;
-        img {
-            height: 5rem;
-        }
-        h1 {
-            color: #C4DFE6;
-            text-transform: uppercase;
-        }
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        background-color: #003B46;
-        border-radius: 2rem;
-        padding: 3rem 5rem;
-    }
-    input {
-        background-color: #97D5E0;
-        padding: 1rem;
-        border: 0.1rem solid #07575B;
-        border-radius: 0.4rem;
-        color: black;
-        width: 100%;
-        font-size: 1rem;
-        &:focus {
-            border: 0.1rem solid #C4DFE6;
-            outline: none;
-        }
-    }
-    button {
-        background-color: #4e0eff;
-        color: white;
-        padding: 1rem 2rem;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 0.4rem;
-        font-size: 1rem;
-        text-transform: uppercase;
-        &:hover {
-            background-color: green;
-        }
-    }
-    span {
-        color: white;
-        text-transform: uppercase;
-        a {
-            color: #4e0eff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    }
-`;
 
 export default Register;
