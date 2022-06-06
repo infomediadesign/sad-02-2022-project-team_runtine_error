@@ -16,7 +16,6 @@ const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'
 
 
 app.post('/register', async(req,res)=>{
-    console.log(req.body);
     const {username, password, email, firstName, lastName, city} = req.body;
     const session = driver.session();
     const existingCheck = await session.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
@@ -34,6 +33,8 @@ app.post('/register', async(req,res)=>{
     const reply  = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P)`);
     const user = reply.records[0]._fields[0].properties;
     session.close();
+    const token = jwt.sign(username, tokenSecret);
+    user.token = token;
     delete user.password;
     return res.json({status:true, user});
 })
@@ -47,7 +48,6 @@ app.post('/', async(req,res)=>{
     }
     const hashedPassword = loginCreds.records[0]._fields[0];
     const passCheck = await bcrypt.compare(password,hashedPassword);
-    console.log(passCheck);
     if(!passCheck){
         return res.json({message:"Incorrect password", status:false});
     }
@@ -87,13 +87,10 @@ app.get('/allusers/:id', async(req,res)=>{
 
 app.post('/getuser', async(req, res)=>{
     const {savedToken} = req.body;
-    console.log(savedToken);
     const username = jwt.verify(savedToken, tokenSecret);
-    console.log(username)
     const session = driver.session();
     const reply = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P)`);
     const user = reply.records[0]._fields[0].properties;
-    console.log(user);
     session.close();
     delete user.password;
     return res.json(user);
