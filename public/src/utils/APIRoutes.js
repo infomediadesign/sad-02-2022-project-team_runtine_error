@@ -3,5 +3,6 @@ export const registerRoute = `${host}/register`;
 export const loginRoute = `${host}/login`;
 export const SetAvatarRouter = `${host}/setAvatar`;
 //^ get all contacts from database 
+export const ChatRouter = `${host}/Chat`;
 export const allUsersRoute = `${host}/allusers`;
 

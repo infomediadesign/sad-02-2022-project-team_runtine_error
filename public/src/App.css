@@ -1,4 +1,4 @@
-h1{
+.Name{
   position: absolute;
   width: 492px;
   height: 102px;
@@ -15,6 +15,14 @@ h1{
   .App{
     text-align: center;
   }
+
+  .Logo{
+    position: absolute;
+width: 80px;
+height: 80px;
+left: 42%;
+top: 10px;
+}
   
   
   
