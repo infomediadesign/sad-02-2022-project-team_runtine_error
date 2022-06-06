@@ -31,17 +31,13 @@ export default function Chat() {
             }
             else{
                 const savedToken = localStorage.getItem("chatapp-user");
-                console.log(savedToken);
                 const userDetails = axios.post(localUser, {
                     savedToken
                 }); 
                 // console.log((await userDetails).data);
                 // let stringData= {};
                 const stringData = ((await userDetails).data);
-                console.log(stringData);
                 setCurrentUser (stringData);
-                console.log(currentUser);
-                //setCurrentUser(await JSON.parse(localStorage.getItem("chatapp-user")));
                 setIsLoaded(true);
             }
         };
