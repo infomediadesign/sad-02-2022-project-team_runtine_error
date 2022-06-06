@@ -40,7 +40,8 @@ export default function Login() {
                 toast.error(data.message, toastOptions);
             }
             if(data.status === true){
-                localStorage.setItem('chatapp-user',JSON.stringify(data.token))
+                console.log(data.user.token);
+                localStorage.setItem('chatapp-user',data.user.token)
                 //& user to local storage and navigate to the chat container
                 navigate("/Chat");
             }

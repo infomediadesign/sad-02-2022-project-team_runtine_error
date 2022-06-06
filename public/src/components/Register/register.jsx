@@ -45,6 +45,7 @@ function Register() {
                 toast.error(data.message, toastOptions);
             }
             if(data.status === true){
+                console.log(data.user);
                 localStorage.setItem('chatapp-user',JSON.stringify(data.user));
                 //& user to local storage and navigate to the chat container
                 navigate("/Chat");

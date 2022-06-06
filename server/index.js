@@ -1,4 +1,5 @@
 require('dotenv').config();
+const tokenSecret = process.env.TOKEN_SECRET;
 const express = require('express');
 const neo = require('neo4j-driver');
 const bcrypt = require('bcrypt');
@@ -11,26 +12,6 @@ app.listen(5000,()=>{
     console.log('Started on port 5000');
 });
 const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
-
-<<<<<<< HEAD
-=======
-const validation = (req,res,next)=>{
-    const schema = Joi.object({
-        firstName:Joi.string().required(),
-        lastName:Joi.string().required(),
-        username: Joi.string().required().min(5).max(8),
-        password: Joi.string().alphanum().required().min(6).max(12),
-        //repeat_password: Joi.ref('password'),
-        email: Joi.string().email().required(),
-        city: Joi.string().required()
-
-    })
-    const {error} = schema.validate(req.body);
-    if(error) return res.send(error.details[0].message);
-    next();
-}
-
->>>>>>> 9721aa4ae583b82ffced0d87af68f745938bff32
 
 
 
@@ -59,7 +40,6 @@ app.post('/register', async(req,res)=>{
 
 app.post('/', async(req,res)=>{
     const {username, password} =req.body;
-    const tokenSecret = process.env.TOKEN_SECRET;
     const session = driver.session();
     const loginCreds = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P.password)`)
     if (loginCreds.records.length===0){
@@ -104,7 +84,17 @@ app.get('/allusers/:id', async(req,res)=>{
     //console.log(users);
     return res.json(users);
 })
-<<<<<<< HEAD
 
-=======
->>>>>>> 9721aa4ae583b82ffced0d87af68f745938bff32
+app.post('/getuser', async(req, res)=>{
+    const {savedToken} = req.body;
+    console.log(savedToken);
+    const username = jwt.verify(savedToken, tokenSecret);
+    console.log(username)
+    const session = driver.session();
+    const reply = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P)`);
+    const user = reply.records[0]._fields[0].properties;
+    console.log(user);
+    session.close();
+    delete user.password;
+    return res.json(user);
+})
