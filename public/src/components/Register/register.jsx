@@ -95,29 +95,29 @@ function Register() {
                 <h3>Register</h3>
             <form onSubmit={(event)=>handleSubmit(event)}>
                 <label>First Name</label>
-                <input type="text" placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="text" placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <label>Last Name</label>
-                <input type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <label>Username</label>
-                <input type="text" placeholder="Username" name="username" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="text" placeholder="Username" name="username" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <label>City</label>
-                <input type="text" placeholder="City" name="city" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="text" placeholder="City" name="city" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <label>Email ID</label>
-                <input type="email" placeholder="Email" name="email" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="email" placeholder="Email" name="email" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <label>Password</label>
-                <input type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <label>Confirm Password</label>
-                <input type="password" placeholder="confirm password" name="confirmPassword" onChange={(e) => handleChange(e)}/>
+                <input className="registerInput" type="password" placeholder="confirm password" name="confirmPassword" onChange={(e) => handleChange(e)}/>
                 <br></br>
                 <button type="submit">Sign Up</button>
                 <span>
-                    Already have an account ? <Link to="/login">Login.</Link>
+                    Already have an account ? <Link to="/">Login.</Link>
                 </span>     
             </form>
             </div>     
