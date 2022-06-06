@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
-import Logout from '../Logout';
+import Logout from '../Logout/Logout';
 import Messages from '../Messages';
 
 export default function ChatContainer({currentChat}) {
@@ -38,6 +38,7 @@ display: grid;
 grid-template-rows: 10% 80% 10%;
 gap: 0.1rem;
 overflow: hidden;
+margin-top: ;
 
 @media screen and (min-width: 720px) and (max-width: 1080px) {
     grid-template-rows: 15% 70% 15%;

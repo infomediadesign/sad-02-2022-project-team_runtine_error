@@ -30,6 +30,8 @@ export default function Chat() {
                 navigate("/login");
             }
             else{
+                const localU = await JSON.parse(localStorage.getItem("chatapp-user"));
+                console.log(localU);
                 setCurrentUser(await JSON.parse(localStorage.getItem("chatapp-user")));
                 setIsLoaded(true);
             }
