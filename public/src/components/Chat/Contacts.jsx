@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
-import Logo from "../assets/logo.svg"
 import styled from 'styled-components'
+import './Contacts.css'
 
 export default function Contacts({contacts,currentUser,changeChat}) {
     const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -28,10 +28,14 @@ export default function Contacts({contacts,currentUser,changeChat}) {
         {currentUserImage && currentUserName &&
             (
                 <Container>
-                    <div className="brand">
-                        <img src={Logo} alt="Logo" />
-                        <h3>ChatApp</h3>
-                    </div>
+                    <div className="content">
+                    
+                    <div className="current-user">
+                        <div className="avatar">
+                            <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" />
+                            <h1 className='currentUser'>{currentUserName}</h1>
+                        </div>
+                    </div>  
                     <div className="contacts">
                         {
                             contacts.map((contact, index) =>{
@@ -46,12 +50,8 @@ export default function Contacts({contacts,currentUser,changeChat}) {
                             })
                         }
                     </div>
-                    <div className="current-user">
-                        <div className="avatar">
-                            <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" />
-                            <h1>{currentUserName}</h1>
-                        </div>
-                    </div>   
+                    </div>
+                     
                 </Container>
             )
         }
@@ -59,17 +59,17 @@ export default function Contacts({contacts,currentUser,changeChat}) {
 }
 
 const Container = styled.div`
-    display: grid;
-    grid-template-rows: 10% 75% 15%;
-    overflow: hidden;
-    background-color: #07576A;
-    .brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    justify-content: center;
+  position: absolute;
+width: 342px;
+height: 612px;
+left: 3px;
+top: 156px;
+
+background: rgba(78, 136, 204, 0.5);
+border-radius: 26px;
         img {
             height: 2rem;
+            left:2px;
         }
         h3 {
             color: white;
@@ -90,49 +90,20 @@ const Container = styled.div`
         border-radius: 1rem;
         }
     }
-    .contact {
-        background-color: #ffffff34;
-        min-height: 5rem;
-        cursor: pointer;
-        width: 90%;
-        border-radius: 0.2rem;
-        padding: 0.4rem;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        transition: 0.5s ease-in-out;
-        .avatar {
-            img {
-                height: 3rem;
-            }
-        }
-        .username {
-            h3 {
-                color: white;
-            }
-        }
-    }
     .selected {
         background-color: #9a86f3;
     }
     }
     .current-user {
     background-color: #0757AA;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
+    display:flex;
     .avatar {
         img {
-        height: 4rem;
-        max-inline-size: 100%;
+        height: 2rem;
+        margin-left: 20%;
         }
     }
-    .username {
-        h2 {
-        color: white;
-        }
-    }
+}
     @media screen and (min-width: 720px) and (max-width: 1080px) {
         gap: 0.5rem;
         .username {

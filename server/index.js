@@ -43,7 +43,8 @@ app.post('/register', async(req,res)=>{
     }
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password,salt);
-    await session.run(`CREATE (P:Person{username:"${username}", password:"${hashedPassword}", email:"${email}", address:"${address}"})`);
+    await session.run(`CREATE (P:Person{firstName:"${firstName}", lastName:"${lastName}", username: "${username}", city:"${city}", email:"${email}", password:"${hashedPassword}"})`);
+    //await session.run(`CREATE (P:Person{username:"${username}", password:"${hashedPassword}", email:"${email}", address:"${address}"})`);
     const reply  = await session.run(`MATCH (P:Person{username:'${username}'}) RETURN (P)`);
     const user = reply.records[0]._fields[0].properties;
     session.close();

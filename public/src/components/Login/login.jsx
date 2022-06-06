@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginRoute } from "../utils/APIRoutes";
+import { loginRoute } from "../../utils/APIRoutes";
 import {ToastContainer, toast} from "react-toastify";
 import LoginLogo from './LoginLogo.png';
 import Main from './Main.jpg';
-import Logo from './Logo.jpg';
 import './login.css'
 
 import axios from 'axios';
@@ -75,7 +74,6 @@ export default function Login() {
     
        <div className="content">
            <div className='tagline'>Connection without conversation is impossible!</div>
-            <img class="Logo" src={Logo} />
             <img class="BackgroundImage" src={Main} />
             <div className="login">
             <form onSubmit={(event)=>handleSubmit(event)}>

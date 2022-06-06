@@ -4,9 +4,10 @@ import {Buffer} from "buffer";
 import { useNavigate, Link, useLinkClickHandler } from "react-router-dom";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../assets/loader.gif";
+import Loader from "../../assets/loader.gif";
 import axios from 'axios';
-import { SetAvatarRouter } from "../utils/APIRoutes";
+import './SetAvatar.css';
+import { SetAvatarRouter } from "../../utils/APIRoutes";
 
 
 export default function SetAvatar() {
@@ -77,9 +78,9 @@ export default function SetAvatar() {
             </Container>:(
                 <Container>
                 <div className="title-container">
-                    <h1>
+                    <h2>
                         Pick your profile avatar
-                    </h1>
+                    </h2>
                 </div>
                 <div className="avatars">
                     {
@@ -109,19 +110,10 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 3rem;
-    background-color: #07575B;
+    background-color: fffff;
     height: 100vh;
     width: 100vw;
 
-    .loader {
-        max-inline-size: 100%;
-    }
-
-    .title-container {
-        h1 {
-        color: white;
-        }
-    }
     .avatars {
         display: flex;
         gap: 2rem;
@@ -141,19 +133,6 @@ const Container = styled.div`
         .selected {
             border: 0.4rem solid #4e0eff;
         }
-        }
-        .submit-btn {
-        background-color: #4e0eff;
-        color: white;
-        padding: 1rem 2rem;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 0.4rem;
-        font-size: 1rem;
-        text-transform: uppercase;
-        &:hover {
-            background-color: #4e0eff;
         }
     }
 `;
