@@ -6,4 +6,3 @@ export const SetAvatarRouter = `${host}/setAvatar`;
 export const ChatRouter = `${host}/Chat`;
 export const allUsersRoute = `${host}/allusers`;
 export const localUser = `${host}/getuser`;
-export const sendMessageRoute = `${host}/messages/addmessage`
