@@ -6,7 +6,17 @@ import Messages from '../Messages';
 
 export default function ChatContainer({currentChat}) {
     //console.log(currentChat);
-    const handleSendMessage = async (message)=>{};
+
+    const handleSendMessage = async (message)=>{
+        alert(message)
+        // await axios.post(sendMessageRoute,{
+        //     from:currentUser.ID,
+        //     to: currentChat.ID,
+        //     message: message,
+        // })
+    };
+   const handleSendMessage = async (message)=>{};
+
 
 return (
 <>
