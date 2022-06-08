@@ -5,7 +5,7 @@ const neo = require('neo4j-driver');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const mongoose = require("mongoose");
+//const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -125,52 +125,59 @@ app.post('/dummy', async(req,res)=>{
     return res.json({fromID, toID});
 });
 
-//^message model
-const mongoose = require("mongoose");
-
-const messageSchema = new mongoose.Schema({
-    message: {
-        text: { type: String, required: true },
-    },
-    users: Array,
-    sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    },
-    //^ to sort messages
-    {timestamps: true,}
-)
-
-module.exports = mongoose.model("Users",messageSchema)
 
 
-//^ message route
-router.post("/addMsg/", addMessage);
-router.post("/getMsg/", getMessages);
 
-module.exports = router;
 
-//^ message controller
-module.exports.addMessage = async (req, res, next) => {
-    try {
-        const {from,to,messages} =req.body;
-        const data = await MessageModel.create({
-            message:{text:message},
-            users:[from,to],
-            //^ sequence 
-            sender:from,
-        });
-        if(data) return res.json({message:"Message added/saved successfully..."});
 
-    return res.json({message:"Message failed save to DB"});
 
-    } catch (err) {
-        next(err);
-    }
-};
 
-module.exports.getMessages = async (req, res, next) => {
+// //^message model
+// const mongoose = require("mongoose");
+
+// const messageSchema = new mongoose.Schema({
+//     message: {
+//         text: { type: String, required: true },
+//     },
+//     users: Array,
+//     sender: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User",
+//         required: true,
+//     },
+//     },
+//     //^ to sort messages
+//     {timestamps: true,}
+// )
+
+// module.exports = mongoose.model("Users",messageSchema)
+
+
+// //^ message route
+// router.post("/addMsg/", addMessage);
+// router.post("/getMsg/", getMessages);
+
+// module.exports = router;
+
+// //^ message controller
+// module.exports.addMessage = async (req, res, next) => {
+//     try {
+//         const {from,to,messages} =req.body;
+//         const data = await MessageModel.create({
+//             message:{text:message},
+//             users:[from,to],
+//             //^ sequence 
+//             sender:from,
+//         });
+//         if(data) return res.json({message:"Message added/saved successfully..."});
+
+//     return res.json({message:"Message failed save to DB"});
+
+//     } catch (err) {
+//         next(err);
+//     }
+// };
+
+// module.exports.getMessages = async (req, res, next) => {
     
-};
+// };
