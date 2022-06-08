@@ -72,7 +72,7 @@ export default function Chat() {
                     </div>
                     <div>
                         {isLoaded && currentChat ===undefined?
-                        (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat} currentUser={currentUser} />)}
+                        (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat}/>)}
                     </div>
                 </div>
             </Container>
