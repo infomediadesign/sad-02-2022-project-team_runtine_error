@@ -5,7 +5,7 @@ const neo = require('neo4j-driver');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-//const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -129,11 +129,20 @@ app.post('/dummy', async(req,res)=>{
 
 
 
+mongoose.connect(process.env.MONGO_URL,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    })
+    .then(()=>{
+        console.log("MongoDb connection Success");
+    })
+    .catch((err)=>{
+        console.log(err.message);
+});
 
 
 
 // //^message model
-// const mongoose = require("mongoose");
 
 // const messageSchema = new mongoose.Schema({
 //     message: {
@@ -179,5 +188,21 @@ app.post('/dummy', async(req,res)=>{
 // };
 
 // module.exports.getMessages = async (req, res, next) => {
-    
+//     try {
+//         const {from,to} = req.body;
+//         const messages = await messageModel.find({
+//             users:{
+//                 $all:[from,to]
+//             },
+//         }).sort({updatedAt: 1});
+//         const projectMessages = messages.map((message)=>{
+//             return{
+//                 fromSelf: message.sender.toString() ===from,
+//                 message:message.message.text,
+//             };
+//         });
+//         res.json(projectMessages);
+//     } catch (err) {
+//         next(err)
+//     }
 // };

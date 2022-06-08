@@ -39,11 +39,11 @@ export default function ChatInput({handleSendMessage}) {
                     }
                 </div>
             </div>
-            <div>
+            <div className='type-box'>
 
             <form className='input-container' onSubmit={(event)=>sendChat(event)}>
-                <input type="text" placeholder='type your message...' value={message}/>
-                <button className='submit'>
+                <input type="text" placeholder='type your message...' value={message} onChange={(e)=>setMessage(e.target.value)}/>
+                <button type='submit'>
                     <IoMdSend />
                 </button>
             </form>
@@ -112,6 +112,9 @@ const Container = styled.div`
                 }
             }
         }
+    }
+    .type-box{
+        height:70vh;
     }
 
     .input-container {

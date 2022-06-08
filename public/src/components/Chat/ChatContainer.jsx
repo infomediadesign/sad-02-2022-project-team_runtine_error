@@ -9,11 +9,12 @@ import { sendMessageRoute } from '../../utils/APIRoutes';
 export default function ChatContainer({currentChat, currentUser}) {
     //console.log(currentChat);
     const handleSendMessage = async (message)=>{
-        await axios.post(sendMessageRoute,{
-            from:currentUser.ID,
-            to: currentChat.ID,
-            message: message,
-        })
+        alert(message)
+        // await axios.post(sendMessageRoute,{
+        //     from:currentUser.ID,
+        //     to: currentChat.ID,
+        //     message: message,
+        // })
     };
 
 return (
