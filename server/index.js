@@ -4,12 +4,14 @@ const express = require('express');
 const neo = require('neo4j-driver');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
+const socket = require('socket.io');
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.listen(5000,()=>{
-    console.log('Started on port 5000');
+    console.log('Started on port 5000');  
 });
 const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
 
@@ -94,7 +96,6 @@ app.post('/getuser', async(req, res)=>{
     session.close();
     delete user.password;
     return res.json(user);
-
 })
 
 app.post('/dummy', async(req,res)=>{
@@ -126,7 +127,30 @@ app.post('/dummy', async(req,res)=>{
 });
 
 
+const io = socket(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true,
+    },
+});
 
+global.onlineUsers = new Map();
+
+//? i don't know fromID  but we need to use userID
+io.on("connection",(socket)=>{
+    global.chatSocket = socket;
+    socket.on("add-user",(fromID)=>{
+        onlineUsers.set(fromID,socket.id);
+    });
+
+    socket.on("send-message",(data)=>{
+        const sendUserSocket = onlineUsers.get(data.to);
+        //^If user is online
+        if(sendUserSocket){
+            socket.to(sendUserSocket).emit("message-receive",data.message);
+        }
+    })
+})
 
 
 mongoose.connect(process.env.MONGO_URL,{
@@ -206,6 +230,3 @@ mongoose.connect(process.env.MONGO_URL,{
 //         next(err)
 //     }
 // };
-=======
-})
-
