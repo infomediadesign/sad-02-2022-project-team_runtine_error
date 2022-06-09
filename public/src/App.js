@@ -4,7 +4,6 @@ import Chat from './components/Chat/Chat'
 import Login from './components/Login/login'
 import Register from './components/Register/register'
 import SetAvatar from './components/SetAvatar/SetAvatar'
-import Profile from './components/Profile/profile'
 import './App.css'
 import Logo from './Logo.jpg';
 
@@ -20,7 +19,6 @@ export default function App() {
                 <Route path="/setAvatar" element= {<SetAvatar/>}/>
                 <Route path="/chat" element= {<Chat/>}/>
                 <Route path='/login' element = {<Login/>}/>
-                <Route path='/profile' element = {<Profile />}/>
             </Routes>
 
         </div>
