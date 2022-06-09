@@ -6,15 +6,16 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
-const socket = require('socket.io');
+const socket = require("socket.io");
+const http = require ('http');
+
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.listen(5000,()=>{
-    console.log('Started on port 5000');  
-});
+const server = http.createServer(app);
 const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
 
+server.listen(5000,()=>{console.log("Server started on 5000")});
 
 
 app.post('/register', async(req,res)=>{
@@ -126,6 +127,9 @@ app.post('/dummy', async(req,res)=>{
     return res.json({fromID, toID});
 });
 
+// const server = server.listen("3001",()=>{
+//     console.log(`Server Started on Port ${process.env.PORT}`);
+// })
 
 const io = socket(server, {
     cors: {
@@ -133,6 +137,7 @@ const io = socket(server, {
         credentials: true,
     },
 });
+
 
 global.onlineUsers = new Map();
 
