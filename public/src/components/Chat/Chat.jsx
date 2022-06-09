@@ -34,8 +34,6 @@ export default function Chat() {
                 const userDetails = axios.post(localUser, {
                     savedToken
                 }); 
-                // console.log((await userDetails).data);
-                // let stringData= {};
                 const stringData = ((await userDetails).data);
                 setCurrentUser (stringData);
                 setIsLoaded(true);
