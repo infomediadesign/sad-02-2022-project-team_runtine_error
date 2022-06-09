@@ -50,7 +50,7 @@ export default function SetAvatar() {
                 stringData.isAvatarImageSet = true;
                 stringData.avatarImage = data.image;
                 //localStorage.setItem("chatapp-user",JSON.stringify(user));
-                navigate('/');
+                navigate('/questionnaire');
             }
             else{
                 toast.error("Error setting avatar. Please try again", toastOptions)
@@ -113,7 +113,7 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 3rem;
-    background-color: #07575B;
+    background-color: white;
     height: 100vh;
     width: 100vw;
 

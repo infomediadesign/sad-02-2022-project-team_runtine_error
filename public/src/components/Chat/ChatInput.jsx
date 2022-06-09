@@ -3,7 +3,7 @@ import {IoMdSend} from 'react-icons/io'
 import {BsEmojiSmileFill} from 'react-icons/bs'
 import Picker from 'emoji-picker-react'
 import styled from 'styled-components';
-
+import Logout from '../Logout/Logout';
 
 export default function ChatInput({handleSendMessage}) {
 
@@ -31,6 +31,7 @@ export default function ChatInput({handleSendMessage}) {
 
     return (
         <Container>
+
             <div className="button-container">
                 <div className="emoji">
                     <BsEmojiSmileFill onClick={handleEmojiPickerHideShow}/>
@@ -39,15 +40,23 @@ export default function ChatInput({handleSendMessage}) {
                     }
                 </div>
             </div>
+
+
+            <div>
+            <form className='input-container'>
+                <input type="text" placeholder='type your message...' />
+                <button className='submit' style={{backgroundColor: "pink"}}>
             <div className='type-box'>
 
             <form className='input-container' onSubmit={(event)=>sendChat(event)}>
                 <input type="text" placeholder='type your message...' value={message} onChange={(e)=>setMessage(e.target.value)}/>
                 <button type='submit'>
+
                     <IoMdSend />
                 </button>
             </form>
             </div>
+            
         </Container>
     )
 }
@@ -56,7 +65,7 @@ const Container = styled.div`
     display: grid;
     align-items: center;
     grid-template-columns: 5% 95%;
-    background-color: #07575B;
+    background-color: blue;
     padding: 0 2rem;
 
     @media screen and (min-width: 720px) and (max-width: 1080px) {

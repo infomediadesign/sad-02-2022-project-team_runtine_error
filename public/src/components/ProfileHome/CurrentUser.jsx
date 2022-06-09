@@ -1,9 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
-import './Contacts.css'
 
-export default function Contacts({contacts,currentUser,changeChat}) {
-    const [currentSelected, setCurrentSelected] = useState(undefined);
+export default function CurrentUser({currentUser}) {
     const [currentUserName, setCurrentUserName]= useState(undefined);
     const [currentUserImage, setCurrentUserImage] = useState(undefined);
     
@@ -19,11 +17,6 @@ export default function Contacts({contacts,currentUser,changeChat}) {
         fnc4();
     },[currentUser]);
 
-    const changeCurrentChat = (index, contact) => {
-        setCurrentSelected(index);
-        changeChat(contact);
-    };
-
     return <>
         {currentUserImage && currentUserName &&
             (
@@ -36,20 +29,6 @@ export default function Contacts({contacts,currentUser,changeChat}) {
                         </div>
                         <h1 className='currentUser'>{currentUserName}</h1>
                     </div>  
-                    <div className="contacts">
-                        {
-                            contacts.map((contact, index) =>{
-                                return(
-                                    <div className={`contact ${index === currentSelected? "selected":""}`} key={index} onClick={()=>changeCurrentChat(index,contact)}>
-                                        <div className="avatar">
-                                            <img src={`data:image/svg+xml;base64,${contact.avatarImage}`} alt="" />
-                                        </div>
-                                        <h3>{contact.username}</h3>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
                     </div>
                      
                 </Container>
@@ -59,13 +38,13 @@ export default function Contacts({contacts,currentUser,changeChat}) {
 }
 
 const Container = styled.div`
-  position: absolute;
+position: absolute;
 width: 342px;
-left: 3px;
-top: 110px;
-
+height: 750px;
+left: -3px;
+top: -40px;
 background: rgba(78, 136, 204, 0.5);
-border-radius: 26px;
+border-radius: 12px;
         img {
             height: 3rem;
             left:2px;
@@ -94,7 +73,6 @@ border-radius: 26px;
     }
     }
     .current-user {
-    background-color: #0757AA;
     display:flex;
     margin-bottom: 20px;
     .avatar {
