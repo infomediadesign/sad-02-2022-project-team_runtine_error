@@ -235,3 +235,33 @@ mongoose.connect(process.env.MONGO_URL,{
 //         next(err)
 //     }
 // };
+app.post('/questionnaire', async (req, res) => {
+
+    console.log(req.body);
+    const interestArray=[];
+    const { userName, value } = req.body;
+    const interests = value.split(",");
+    console.log(interests);
+    const ses = driver.session();
+    const resp = await ses.run(`MATCH(I:Interest) RETURN (I)`);
+    resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
+    ses.close();
+    interests.forEach(async (interest) => {
+        const session = driver.session();
+        const intPresent = interestArray.findIndex(rec => rec === interest);
+        if (intPresent === -1) {
+            const newInterest = await session.run(`CREATE (I:Interest{name:'${interest}'}) RETURN (I)`);
+        }
+        const alreadyInterested = await session.run(`MATCH (P:Person{username:'${userName}'}),(I:Interest{name:'${interest}'}) RETURN EXISTS((P)-[:Interested]->(I))`);
+        if (alreadyInterested.records[0]._fields[0]) {
+            console.log("already interested");
+        }
+        else {
+        const intUpdate = await session.run(`MATCH (P:Person{username:'${userName}'}),(I:Interest{name:'${interest}'}) CREATE (P)-[:Interested]->(I)`);
+        console.log(intUpdate);
+        session.close();
+        }
+    });
+    return res.json({ data: "Received" });
+
+})
