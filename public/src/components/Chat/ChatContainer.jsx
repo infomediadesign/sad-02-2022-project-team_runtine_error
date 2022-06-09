@@ -1,12 +1,73 @@
-import React from 'react'
+import React ,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
 import Logout from '../Logout';
 import Messages from '../Messages';
+import { v4 as uuidv4 } from "uuid";
+import axios from 'axios';
+import { sendMessageRoute } from '../../utils/APIRoutes';
 
-export default function ChatContainer({currentChat}) {
+export default function ChatContainer({currentChat, currentUser, socket}) {
+    const [setMessages,messages]= useState([]);
+    const [arrivalMessage, setArrivalMessage] = useState(null);
+    //^ REF will scroll into the view the new messages  
+    const scrollRef = useRef();
     //console.log(currentChat);
-    const handleSendMessage = async (message)=>{};
+
+    useEffect(()=>{
+        var fnc10 = async function(){
+            if(socket.current){
+                //! we need check this 
+            }
+        };
+        fnc10();
+    },[]);
+
+    const handleSendMessage = async (message)=>{
+        alert(message)
+        // await axios.post(sendMessageRoute,{
+        //     from:currentUser.ID,
+        //     to: currentChat.ID,
+        //     message: message,
+        // });
+        socket.current.emit("send-message",{
+            //^ need chat id also
+            to:currentChat._id,
+            from: currentUser._id,
+            message: message,
+        });
+
+        const messages = [...messages];
+        messages.push({fromSelf:true,message:message});
+        //^ need to check again 
+        setMessages(messages);
+
+    };
+
+    useEffect(()=>{
+        var fnc7 = async function(){
+            if(socket.current){
+                socket.current.on("message-receive",(message)=>{
+                    setArrivalMessage({fromSelf:false, message:message});
+                })
+            }
+        };
+        fnc7();
+    },[]);
+
+    useEffect(()=>{
+        var fnc8 = async function(){
+            arrivalMessage && setMessages((prev)=>[...prev,arrivalMessage])
+        };
+        fnc8();
+    },[arrivalMessage]);
+
+    useEffect(()=>{
+        var fnc9 = async function(){
+            scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        };
+        fnc9();
+    },[messages]);
 
 return (
 <>
@@ -74,16 +135,6 @@ overflow: hidden;
     flex-direction: column;
     gap: 1rem;
     overflow: auto;
-
-    &::-webkit-scrollbar {
-        width: 0.2rem;
-
-        &-thumb {
-            background-color: #ffffff39;
-            width: 0.1rem;
-            border-radius: 1rem;
-        }
-    }
 
     .message {
         display: flex;
