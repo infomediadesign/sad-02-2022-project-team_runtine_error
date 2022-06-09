@@ -1,0 +1,38 @@
+.interests{
+    position: absolute;
+    width: 80rem;
+    margin-top: -rem;
+    margin-left: 8rem;
+    justify-content:center;
+    border-radius: 20px;
+    }
+    
+    h2{
+        margin-top: 2rem;
+        color: #1F5CA5;
+        font-weight: bolder;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    button{
+        margin-top: 30rem;
+        margin-right: 7rem;
+        width: 15rem;
+        font-size: 22px;
+    }
+    button:hover{
+        width: 17rem;
+    }
+    
+    label{
+        display:flex;
+        margin-left: 40rem;
+        color: #1F5CA5;
+        width: 140px;
+        font-size: 20px;
+        padding: 8px;
+    }
+    input{
+        margin-right: 2rem;
+    }

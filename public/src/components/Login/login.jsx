@@ -6,6 +6,7 @@ import LoginLogo from './LoginLogo.png';
 import Main from './Main.jpg';
 import './login.css'
 
+
 import axios from 'axios';
 
 export default function Login() {
@@ -40,9 +41,10 @@ export default function Login() {
                 toast.error(data.message, toastOptions);
             }
             if(data.status === true){
-                localStorage.setItem('chatapp-user',JSON.stringify(data.user))
-                //& user to local storage and navigate to the chat container
-                navigate("/Chat");
+                console.log(data.user.token);
+                localStorage.setItem('chatapp-user',data.user.token)
+                //& user to local storage and navigate to the profile
+                navigate("/profileHome");
             }
         }
     };

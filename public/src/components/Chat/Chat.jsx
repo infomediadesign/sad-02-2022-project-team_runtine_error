@@ -2,10 +2,11 @@ import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import { allUsersRoute } from '../../utils/APIRoutes';
+import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
+import Logout from '../Logout/Logout';
 
 
 export default function Chat() {
@@ -30,9 +31,14 @@ export default function Chat() {
                 navigate("/login");
             }
             else{
-                const localU = await JSON.parse(localStorage.getItem("chatapp-user"));
-                console.log(localU);
-                setCurrentUser(await JSON.parse(localStorage.getItem("chatapp-user")));
+                const savedToken = localStorage.getItem("chatapp-user");
+                const userDetails = axios.post(localUser, {
+                    savedToken
+                }); 
+                // console.log((await userDetails).data);
+                // let stringData= {};
+                const stringData = ((await userDetails).data);
+                setCurrentUser (stringData);
                 setIsLoaded(true);
             }
         };
@@ -61,6 +67,7 @@ export default function Chat() {
     return (
         <>
             <Container>
+            <Logout />
                 <div className="container">
                     <div className='contact-container'>
                         <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange}/>

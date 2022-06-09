@@ -27,27 +27,27 @@ function Register() {
     };
 
     //^ this is running olny first time the component is loaded
-    useEffect(()=>{
-        if(localStorage.getItem('chatapp-user')){
-            //navigate('/')
-        }
-    },[]);
+    // useEffect(()=>{
+    //     if(localStorage.getItem('chatapp-user')){
+    //         //navigate('/')
+    //     }
+    // },[]);
 
     const handleSubmit = async(event)=>{
         event.preventDefault();
         if(handleValidation()){
-            const {password, username,email,address}=values;
+            const {firstName, lastName, password, username,email,city}=values;
             // console.log("in validation",registerRoute);
             const {data} = await axios.post(registerRoute,{
-                username,email,password,address,
+                firstName, lastName, username, email, password, city,
             });
             if(data.status === false){
                 toast.error(data.message, toastOptions);
             }
             if(data.status === true){
-                localStorage.setItem('chatapp-user',JSON.stringify(data.user));
+                localStorage.setItem('chatapp-user',data.user.token);
                 //& user to local storage and navigate to the chat container
-                navigate("/Chat");
+                navigate("/setAvatar");
             }
         }
     };
@@ -78,7 +78,7 @@ function Register() {
             return false;
         }
         else if(city===""){
-            toast.error("address is required",toastOptions);
+            toast.error("City name is required",toastOptions);
             return false;
         }
         return true;

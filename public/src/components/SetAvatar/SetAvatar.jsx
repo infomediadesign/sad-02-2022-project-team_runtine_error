@@ -6,9 +6,8 @@ import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../assets/loader.gif";
 import axios from 'axios';
-import './SetAvatar.css';
-import { SetAvatarRouter } from "../../utils/APIRoutes";
-
+import { SetAvatarRouter, localUser } from "../../utils/APIRoutes";
+let stringData;
 
 export default function SetAvatar() {
     const navigate = useNavigate();
@@ -29,7 +28,7 @@ export default function SetAvatar() {
     useEffect(()=>{
         var fnc1 = async function(){
             if(!localStorage.getItem("chatapp-user")){
-                navigate("/login");
+                navigate("/");
             }
         };
         fnc1();
@@ -40,14 +39,18 @@ export default function SetAvatar() {
             toast.error("U need to select profile avatar",toastOptions);
         }
         else{
-            const user = await JSON.parse(localStorage.getItem("chatapp-user"));
-            const {data} = await axios.post(`${SetAvatarRouter}/${user.username}`,{image: avatars[selectedAvatar],});
-            console.log(data);
+            const savedToken = localStorage.getItem("chatapp-user");
+        
+            const userDetails = axios.post(localUser, {
+                savedToken
+            }); 
+            stringData = ((await userDetails).data);
+            const {data} = await axios.post(`${SetAvatarRouter}/${stringData.username}`,{image: avatars[selectedAvatar],});
             if(data.isSet){
-                user.isAvatarImageSet = true;
-                user.avatarImage = data.image;
-                localStorage.setItem("chatapp-user",JSON.stringify(user));
-                navigate('/');
+                stringData.isAvatarImageSet = true;
+                stringData.avatarImage = data.image;
+                //localStorage.setItem("chatapp-user",JSON.stringify(user));
+                navigate('/questionnaire');
             }
             else{
                 toast.error("Error setting avatar. Please try again", toastOptions)
@@ -78,9 +81,9 @@ export default function SetAvatar() {
             </Container>:(
                 <Container>
                 <div className="title-container">
-                    <h2>
+                    <h1>
                         Pick your profile avatar
-                    </h2>
+                    </h1>
                 </div>
                 <div className="avatars">
                     {
@@ -110,10 +113,19 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 3rem;
-    background-color: fffff;
+    background-color: white;
     height: 100vh;
     width: 100vw;
 
+    .loader {
+        max-inline-size: 100%;
+    }
+
+    .title-container {
+        h1 {
+        color: white;
+        }
+    }
     .avatars {
         display: flex;
         gap: 2rem;
@@ -133,6 +145,19 @@ const Container = styled.div`
         .selected {
             border: 0.4rem solid #4e0eff;
         }
+        }
+        .submit-btn {
+        background-color: #4e0eff;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 0.4rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        &:hover {
+            background-color: #4e0eff;
         }
     }
 `;
