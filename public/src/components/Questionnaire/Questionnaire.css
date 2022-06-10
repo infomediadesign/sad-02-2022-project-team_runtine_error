@@ -7,32 +7,32 @@
     border-radius: 20px;
     }
     
-    h2{
-        margin-top: 2rem;
+.hobbiesHeader{
+        margin-top: 5rem;
         color: #1F5CA5;
         font-weight: bolder;
         font-size: 2rem;
         margin-bottom: 1.5rem;
     }
     
-    button{
+    .hobbies-btn{
         margin-top: 30rem;
         margin-right: 7rem;
         width: 15rem;
         font-size: 22px;
     }
-    button:hover{
+   .hobbies-btn:hover{
         width: 17rem;
     }
     
-    label{
+    .hobbies{
         display:flex;
-        margin-left: 40rem;
+        margin-left: 35rem;
         color: #1F5CA5;
         width: 140px;
         font-size: 20px;
         padding: 8px;
     }
-    input{
+    .hobbiesInput{
         margin-right: 2rem;
     }

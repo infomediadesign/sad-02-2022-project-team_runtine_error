@@ -1,12 +1,15 @@
-import React,{useState, useEffect} from 'react';
+import React,{useRef, useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import { allUsersRoute, localUser } from '../../utils/APIRoutes';
+import { allUsersRoute, localUser ,host} from '../../utils/APIRoutes';
 import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
-import Logout from '../Logout/Logout';
+import {io} from 'socket.io-client';
+import Logout from '../../components/Logout/Logout';
+import { ChatRouter } from '../Questionnaire/Questionnaire';
+
 
 
 export default function Chat() {
@@ -15,15 +18,18 @@ export default function Chat() {
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentChat, setCurrentChat] = useState(undefined);
     const [isLoaded,setIsLoaded] = useState(false);
+    const socket = useRef();
 
-    // useEffect(()=>{
-    //     var fnc1 = async function(){
-    //         if(!localStorage.getItem("chatapp-user")){
-    //             navigate("/login");
-    //         }
-    //     };
-    //     fnc1();
-    // },[]);
+    useEffect(()=>{
+        var fnc6 = async function(){
+            if(currentUser){
+                socket.current= io(host);
+                //^ again user id problem
+                //socket.current.emit("add-user",currentUser.id);
+            }
+        };
+        fnc6();
+    },[currentUser]);
 
     useEffect(()=>{
         var fnc3 = async function(){
@@ -74,7 +80,7 @@ export default function Chat() {
                     </div>
                     <div>
                         {isLoaded && currentChat ===undefined?
-                        (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat}/>)}
+                        (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat} socket={socket} />)}
                     </div>
                 </div>
             </Container>

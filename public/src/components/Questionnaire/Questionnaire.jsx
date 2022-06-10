@@ -33,6 +33,7 @@ export default class Questionnaire extends Component {
         }
         this.ChangeHobby = this.ChangeHobby.bind(this);
         this.getCheckboxesValue = this.getCheckboxesValue.bind(this);
+        
      //   this.setCheckboxValueSelected = this.setCheckboxValueSelected.bind(this);
         
     }
@@ -54,21 +55,25 @@ export default class Questionnaire extends Component {
                     savedToken
                 }).then(response=>{console.log(response.data.username);
                     userName = response.data.username;
-                        axios.post(`${questionnaireRoute}`, {value, userName}).then(reply=>{console.log(reply)})
+                        axios.post(`${questionnaireRoute}`, {value, userName}).then(reply=>{console.log(reply);
+                            
+                        } )
                     })
+            
             }
 
     render() {
         return (
+           
             <section className="content-wrapper">
                 <div className="container-fluid " style={{marginTop:"7rem"}}>
-                <h2>Please select some of your interests!!</h2>
+                <h2 className="hobbiesHeader">Please select some of your interests!!</h2>
                     <div className="interests">
                         {
                             this.state.Hobby.map(item => (
 
-                                    <label>
-                                        <input type="checkbox" value={item.value} onChange={this.ChangeHobby} checked={this.state.checkedItems.get(item.value)} />
+                                    <label className="hobbies">
+                                        <input className="hobbiesInput" type="checkbox" value={item.value} onChange={this.ChangeHobby} checked={this.state.checkedItems.get(item.value)} />
                                         {item.value}
                                     </label>
 
@@ -77,7 +82,7 @@ export default class Questionnaire extends Component {
 
                     </div>
                     <div className="row col-md-12 ml-2">
-                        <button type="button" class="btn btn-primary" onClick={this.getCheckboxesValue}>Submit</button>
+                        <button  type="button" className="hobbies-btn" onClick={this.getCheckboxesValue}>Submit</button>
                     </div>
                 </div>
             </section>
@@ -85,5 +90,3 @@ export default class Questionnaire extends Component {
         )
     }
 }
-
-
