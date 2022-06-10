@@ -47,7 +47,7 @@ function Register() {
             if(data.status === true){
                 localStorage.setItem('chatapp-user',data.user.token);
                 //& user to local storage and navigate to the chat container
-                navigate("/Chat");
+                navigate("/setAvatar");
             }
         }
     };
