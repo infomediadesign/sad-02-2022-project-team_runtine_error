@@ -12,6 +12,7 @@ export default function ChatContainer({currentChat, currentUser, socket}) {
     const [arrivalMessage, setArrivalMessage] = useState(null);
     //^ REF will scroll into the view the new messages  
     const scrollRef = useRef();
+
     //console.log(currentChat);
 
     useEffect(()=>{

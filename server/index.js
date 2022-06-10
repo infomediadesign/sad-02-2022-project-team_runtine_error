@@ -12,8 +12,10 @@ const http = require ('http');
 const app = express();
 app.use(express.json());
 app.use(cors());
+
 const server = http.createServer(app);
 const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
+
 
 server.listen(5000,()=>{console.log("Server started on 5000")});
 
@@ -132,6 +134,86 @@ app.post('/dummy', async(req,res)=>{
 //     console.log(`Server Started on Port ${process.env.PORT}`);
 // })
 
+
+
+// mongoose.connect(process.env.MONGO_URL,{
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     })
+//     .then(()=>{
+//         console.log("MongoDb connection Success");
+//     })
+//     .catch((err)=>{
+//         console.log(err.message);
+// });
+
+
+
+// //^ message model
+
+// const messageSchema = new mongoose.Schema({
+//     message: {
+//         text: { type: String, required: true },
+//     },
+//     users: Array,
+//     sender: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User",
+//         required: true,
+//     },
+// },
+//     //^ to sort messages
+//     {timestamps: true,}
+//     )
+    
+//     module.exports = mongoose.model("Users",messageSchema)
+    
+    
+//     // //^ message route
+//     // router.post("/addMsg/", addMessage);
+//     // router.post("/getMsg/", getMessages);
+    
+//     // module.exports = router;
+    
+//     //^ message controller
+//     module.exports.addMessage = async (req, res, next) => {
+//         try {
+//             const {from,to,messages} =req.body;
+//         const data = await MessageModel.create({
+//             message:{text:message},
+//             users:[from,to],
+//             //^ sequence 
+//             sender:from,
+//         });
+//         if(data) return res.json({message:"Message added/saved successfully..."});
+        
+//         return res.json({message:"Message failed save to DB"});
+        
+//     } catch (err) {
+//         next(err);
+//     }
+// };
+
+// module.exports.getMessages = async (req, res, next) => {
+//     try {
+//         const {from,to} = req.body;
+//         const messages = await messageModel.find({
+//             users:{
+//                 $all:[from,to]
+//             },
+//         }).sort({updatedAt: 1});
+//         const projectMessages = messages.map((message)=>{
+//             return{
+//                 fromSelf: message.sender.toString() ===from,
+//                 message:message.message.text,
+//             };
+//         });
+//         res.json(projectMessages);
+//     } catch (err) {
+//         next(err)
+//     }
+// };
+
 const io = socket(server, {
     cors: {
         origin: "http://localhost:3000",
@@ -157,85 +239,6 @@ io.on("connection",(socket)=>{
         }
     })
 })
-
-
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    })
-    .then(()=>{
-        console.log("MongoDb connection Success");
-    })
-    .catch((err)=>{
-        console.log(err.message);
-});
-
-
-
-// //^message model
-
-// const messageSchema = new mongoose.Schema({
-//     message: {
-//         text: { type: String, required: true },
-//     },
-//     users: Array,
-//     sender: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: "User",
-//         required: true,
-//     },
-//     },
-//     //^ to sort messages
-//     {timestamps: true,}
-// )
-
-// module.exports = mongoose.model("Users",messageSchema)
-
-
-// //^ message route
-// router.post("/addMsg/", addMessage);
-// router.post("/getMsg/", getMessages);
-
-// module.exports = router;
-
-// //^ message controller
-// module.exports.addMessage = async (req, res, next) => {
-//     try {
-//         const {from,to,messages} =req.body;
-//         const data = await MessageModel.create({
-//             message:{text:message},
-//             users:[from,to],
-//             //^ sequence 
-//             sender:from,
-//         });
-//         if(data) return res.json({message:"Message added/saved successfully..."});
-
-//     return res.json({message:"Message failed save to DB"});
-
-//     } catch (err) {
-//         next(err);
-//     }
-// };
-
-// module.exports.getMessages = async (req, res, next) => {
-//     try {
-//         const {from,to} = req.body;
-//         const messages = await messageModel.find({
-//             users:{
-//                 $all:[from,to]
-//             },
-//         }).sort({updatedAt: 1});
-//         const projectMessages = messages.map((message)=>{
-//             return{
-//                 fromSelf: message.sender.toString() ===from,
-//                 message:message.message.text,
-//             };
-//         });
-//         res.json(projectMessages);
-//     } catch (err) {
-//         next(err)
-//     }
-// };
 app.post('/questionnaire', async (req, res) => {
 
     console.log(req.body);
@@ -264,5 +267,4 @@ app.post('/questionnaire', async (req, res) => {
         }
     });
     return res.json({ data: "Received" });
-
 })
