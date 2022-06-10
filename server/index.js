@@ -134,47 +134,22 @@ app.post('/dummy', async(req,res)=>{
 //     console.log(`Server Started on Port ${process.env.PORT}`);
 // })
 
-const io = socket(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        credentials: true,
-    },
-});
 
 
-global.onlineUsers = new Map();
-
-//? i don't know fromID  but we need to use userID
-io.on("connection",(socket)=>{
-    global.chatSocket = socket;
-    socket.on("add-user",(fromID)=>{
-        onlineUsers.set(fromID,socket.id);
-    });
-
-    socket.on("send-message",(data)=>{
-        const sendUserSocket = onlineUsers.get(data.to);
-        //^If user is online
-        if(sendUserSocket){
-            socket.to(sendUserSocket).emit("message-receive",data.message);
-        }
-    })
-})
-
-
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    })
-    .then(()=>{
-        console.log("MongoDb connection Success");
-    })
-    .catch((err)=>{
-        console.log(err.message);
-});
+// mongoose.connect(process.env.MONGO_URL,{
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     })
+//     .then(()=>{
+//         console.log("MongoDb connection Success");
+//     })
+//     .catch((err)=>{
+//         console.log(err.message);
+// });
 
 
 
-// //^message model
+// //^ message model
 
 // const messageSchema = new mongoose.Schema({
 //     message: {
@@ -186,24 +161,24 @@ mongoose.connect(process.env.MONGO_URL,{
 //         ref: "User",
 //         required: true,
 //     },
-//     },
+// },
 //     //^ to sort messages
 //     {timestamps: true,}
-// )
-
-// module.exports = mongoose.model("Users",messageSchema)
-
-
-// //^ message route
-// router.post("/addMsg/", addMessage);
-// router.post("/getMsg/", getMessages);
-
-// module.exports = router;
-
-// //^ message controller
-// module.exports.addMessage = async (req, res, next) => {
-//     try {
-//         const {from,to,messages} =req.body;
+//     )
+    
+//     module.exports = mongoose.model("Users",messageSchema)
+    
+    
+//     // //^ message route
+//     // router.post("/addMsg/", addMessage);
+//     // router.post("/getMsg/", getMessages);
+    
+//     // module.exports = router;
+    
+//     //^ message controller
+//     module.exports.addMessage = async (req, res, next) => {
+//         try {
+//             const {from,to,messages} =req.body;
 //         const data = await MessageModel.create({
 //             message:{text:message},
 //             users:[from,to],
@@ -211,9 +186,9 @@ mongoose.connect(process.env.MONGO_URL,{
 //             sender:from,
 //         });
 //         if(data) return res.json({message:"Message added/saved successfully..."});
-
-//     return res.json({message:"Message failed save to DB"});
-
+        
+//         return res.json({message:"Message failed save to DB"});
+        
 //     } catch (err) {
 //         next(err);
 //     }
@@ -238,6 +213,32 @@ mongoose.connect(process.env.MONGO_URL,{
 //         next(err)
 //     }
 // };
+
+const io = socket(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true,
+    },
+});
+
+
+global.onlineUsers = new Map();
+
+//? i don't know fromID  but we need to use userID
+io.on("connection",(socket)=>{
+    global.chatSocket = socket;
+    socket.on("add-user",(fromID)=>{
+        onlineUsers.set(fromID,socket.id);
+    });
+
+    socket.on("send-message",(data)=>{
+        const sendUserSocket = onlineUsers.get(data.to);
+        //^If user is online
+        if(sendUserSocket){
+            socket.to(sendUserSocket).emit("message-receive",data.message);
+        }
+    })
+=======
 app.post('/questionnaire', async (req, res) => {
 
     console.log(req.body);
@@ -266,5 +267,4 @@ app.post('/questionnaire', async (req, res) => {
         }
     });
     return res.json({ data: "Received" });
-
 })
