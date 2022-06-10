@@ -6,7 +6,10 @@ import { allUsersRoute, localUser ,host} from '../../utils/APIRoutes';
 import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
+import Logout from '../Logout/Logout';
+
 import {io} from 'socket.io-client';
+
 
 
 export default function Chat() {
@@ -70,6 +73,7 @@ export default function Chat() {
     return (
         <>
             <Container>
+            <Logout />
                 <div className="container">
                     <div className='contact-container'>
                         <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange}/>

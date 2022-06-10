@@ -6,6 +6,7 @@ import LoginLogo from './LoginLogo.png';
 import Main from './Main.jpg';
 import './login.css'
 
+
 import axios from 'axios';
 
 export default function Login() {
@@ -42,8 +43,8 @@ export default function Login() {
             if(data.status === true){
                 console.log(data.user.token);
                 localStorage.setItem('chatapp-user',data.user.token)
-                //& user to local storage and navigate to the chat container
-                navigate("/Chat");
+                //& user to local storage and navigate to the profile
+                navigate("/profileHome");
             }
         }
     };

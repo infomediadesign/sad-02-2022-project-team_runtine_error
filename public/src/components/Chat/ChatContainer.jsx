@@ -1,6 +1,12 @@
 import React ,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
+
+import Logout from '../Logout/Logout';
+import Messages from './Messages';
+
+export default function ChatContainer({currentChat}) {
+
 import Logout from '../Logout';
 import Messages from '../Messages';
 import { v4 as uuidv4 } from "uuid";
@@ -12,6 +18,7 @@ export default function ChatContainer({currentChat, currentUser, socket}) {
     const [arrivalMessage, setArrivalMessage] = useState(null);
     //^ REF will scroll into the view the new messages  
     const scrollRef = useRef();
+
     //console.log(currentChat);
 
     useEffect(()=>{
@@ -74,6 +81,7 @@ return (
     {
     currentChat && (
     <Container>
+        <Logout />
         <div className="chat-header">
             <div className="user-details">
                 <div className="avatar">
@@ -83,7 +91,8 @@ return (
                     <h3>{currentChat.username}</h3>
                 </div>
             </div>
-            <Logout />
+            
+            
         </div>
         <Messages/>
         <ChatInput handleSendMessage={handleSendMessage} />
@@ -99,31 +108,37 @@ display: grid;
 grid-template-rows: 10% 80% 10%;
 gap: 0.1rem;
 overflow: hidden;
+margin-top: ;
 
 @media screen and (min-width: 720px) and (max-width: 1080px) {
     grid-template-rows: 15% 70% 15%;
 }
 
 .chat-header {
-    display: flex;
+    display: absolute;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
+    background-color: rgba(78, 136, 204, 0.1);
+    height: 5rem;
+    margin-top: 20px;
 
     .user-details {
         display: flex;
         align-items: center;
         gap: 1rem;
-
+        width: 150px;
         .avatar {
             img {
-                height: 3rem;
+                height: 6rem;
+                margin-top: -10px;
             }
         }
 
         .username {
             h3 {
-                color: white;
+                color: black;
+                margin-top: -52px;
             }
         }
     }
