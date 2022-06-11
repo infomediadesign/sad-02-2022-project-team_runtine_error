@@ -7,6 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 import axios from 'axios';
 import { sendMessageRoute } from '../../utils/APIRoutes';
 
+
+
+
+
 export default function ChatContainer({currentChat, currentUser, socket}) {
     const [setMessages,messages]= useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -84,15 +88,14 @@ return (
                 <div className="username">
                     <h3>{currentChat.username}</h3>
                 </div>
-            </div>
-            
+            </div>            
             
         </div>
         <Messages/>
         <ChatInput handleSendMessage={handleSendMessage} />
     </Container>
     )
-    }
+}
 </>
 )
 }

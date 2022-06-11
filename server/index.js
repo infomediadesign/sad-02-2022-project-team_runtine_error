@@ -240,7 +240,6 @@ io.on("connection",(socket)=>{
     })
 })
 app.post('/questionnaire', async (req, res) => {
-
     console.log(req.body);
     const interestArray=[];
     const { userName, value } = req.body;
@@ -267,4 +266,30 @@ app.post('/questionnaire', async (req, res) => {
         }
     });
     return res.json({ data: "Received" });
+})
+
+
+app.post('/sameinterests', async (req, res) => {
+    const tempPer =[];
+    const {username} = req.body;
+    const interestArray = [];
+    const peopleArray = [];
+    const ses = driver.session();
+    const resp = await ses.run(`MATCH(P:Person{username:'${username}'})-[:Interested]->(I:Interest) RETURN (I)`);
+    resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
+    ses.close();
+    let queryString ='';
+    interestArray.forEach(interest => {
+        queryString = queryString + `I.name='${interest}'`;
+        if(interestArray.indexOf(interest) !== interestArray.length-1){
+            queryString = queryString + ' OR ';
+        }
+    })
+    const session = driver.session();
+    const people = await session.run(`MATCH (P:Person),(I:Interest) WHERE ${queryString} MATCH (P)-[:Interested]->(I) RETURN COLLECT(DISTINCT P)`);
+    people.records[0]._fields[0].forEach(field=>peopleArray.push(field.properties));
+    for(let i=0;i<peopleArray.length;i++){
+        delete peopleArray[i].password;
+    }   
+    return res.json({ peopleArray });
 })
