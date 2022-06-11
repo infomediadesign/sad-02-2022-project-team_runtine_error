@@ -86,6 +86,7 @@ export default function Login() {
                 <label className="password">Password</label>
                 <input className="loginInput" type="password" placeholder="Password" name="password" onChange={(e) => handleChange(e)}/><br></br>
                 <Link to="/forgotPassword" style={{marginRight:"26%", marginTop:"30%", fontSize:"14px"}}>Forgot Password?</Link>
+                <br></br>
                 <button type="submit">Login</button>
                 <span>
                     Don't have an account?<Link to="/register">Create Account</Link>

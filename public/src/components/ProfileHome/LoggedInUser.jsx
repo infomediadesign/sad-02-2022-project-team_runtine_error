@@ -3,12 +3,11 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import './ProfileHome.css';
-import ManageProfile from '../ManageProfile/ManageProfile';
 let stringData;
 let isLoaded = false;
 
 
-export default function ProfileHome(){
+export default function LoggedInUser(){
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentUserImage, setCurrentUserImage] = useState(undefined);
@@ -48,21 +47,7 @@ export default function ProfileHome(){
             <div className='profile'>
             <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" style={{height:"3.5rem", marginRight:"15rem", marginTop:"10px"}} />
             {isLoaded?(<h2>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
-            <div className='profileButtons'>
-                <button className='settings'>Settings</button>
-                <button className='addConnection'>Add Connection</button>
-            </div>
-            <div className='settingsLinks'> 
-            <Link to="/requests">Requests</Link> 
-            <br></br>
-            <Link to="/notifications">Notifications</Link><br></br>
-            <Link to="/manageProfile">Manage Your Profile</Link><br></br>
-            <Link to="/events">Events</Link>
-            </div>
-            </div>
-            <div className='manageProfile'>
-                <ManageProfile />
-
+           
             </div>
             
         </div>
