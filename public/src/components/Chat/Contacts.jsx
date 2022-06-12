@@ -33,8 +33,8 @@ export default function Contacts({contacts,currentUser,changeChat}) {
                     <div className="current-user">
                         <div className="avatar">
                             <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" />
+                            <h1 className='currentUser'>{currentUserName}</h1>
                         </div>
-                        <h1 className='currentUser'>{currentUserName}</h1>
                     </div>  
                     <div className="contacts">
                         {
@@ -43,8 +43,8 @@ export default function Contacts({contacts,currentUser,changeChat}) {
                                     <div className={`contact ${index === currentSelected? "selected":""}`} key={index} onClick={()=>changeCurrentChat(index,contact)}>
                                         <div className="avatar">
                                             <img src={`data:image/svg+xml;base64,${contact.avatarImage}`} alt="" />
+                                            <h3>{contact.username}</h3>
                                         </div>
-                                        <h3>{contact.username}</h3>
                                     </div>
                                 )
                             })
@@ -61,13 +61,14 @@ export default function Contacts({contacts,currentUser,changeChat}) {
 const Container = styled.div`
   position: absolute;
 width: 342px;
+height: 612px;
 left: 3px;
-top: 110px;
+top: 156px;
 
 background: rgba(78, 136, 204, 0.5);
 border-radius: 26px;
         img {
-            height: 3rem;
+            height: 2rem;
             left:2px;
         }
         h3 {
@@ -96,12 +97,10 @@ border-radius: 26px;
     .current-user {
     background-color: #0757AA;
     display:flex;
-    margin-bottom: 20px;
     .avatar {
         img {
-        height: 4rem;
+        height: 2rem;
         margin-left: 20%;
-        margin-top: 5px;
         }
     }
 }
