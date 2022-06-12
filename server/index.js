@@ -270,8 +270,7 @@ app.post('/questionnaire', async (req, res) => {
 
 
 app.post('/sameinterests', async (req, res) => {
-    const tempPer =[];
-    const {username} = req.body;
+    const {username} = req.body; 
     const interestArray = [];
     const peopleArray = [];
     const ses = driver.session();
@@ -290,6 +289,11 @@ app.post('/sameinterests', async (req, res) => {
     people.records[0]._fields[0].forEach(field=>peopleArray.push(field.properties));
     for(let i=0;i<peopleArray.length;i++){
         delete peopleArray[i].password;
-    }   
+    }  
+    peopleArray.shift();  
     return res.json({ peopleArray });
+})
+
+app.get('/sameinterests', async (req, res)=>{
+    return res.json({data:"Received"});
 })

@@ -6,7 +6,6 @@ import { allUsersRoute, localUser ,host} from '../../utils/APIRoutes';
 import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
-import {io} from 'socket.io-client';
 import Logout from '../../components/Logout/Logout';
 
 // import {io} from 'socket.io-client';
@@ -24,7 +23,7 @@ export default function Chat() {
     useEffect(()=>{
         var fnc6 = async function(){
             if(currentUser){
-                socket.current= io(host);
+                //socket.current= io(host);
                 //^ again user id problem
                 //socket.current.emit("add-user",currentUser.id);
             }
