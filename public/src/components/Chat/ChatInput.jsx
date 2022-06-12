@@ -38,6 +38,9 @@ export default function ChatInput({handleSendMessage}) {
                         showEmojiPicker && <Picker onEmojiClick={handleEmojiClick}/>
                     }
                 </div>
+
+            </div>
+
             <div className='type-box'>
 
             <form className='input-container' onSubmit={(event)=>sendChat(event)}>
@@ -46,9 +49,7 @@ export default function ChatInput({handleSendMessage}) {
                     <IoMdSend />
                 </button>
             </form>
-            </div>
-            </div>
-            
+            </div> 
         </Container>
     )
 }
