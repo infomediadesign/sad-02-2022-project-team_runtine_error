@@ -171,8 +171,23 @@ const messageSchema = new mongoose.Schema({
     //^ to sort messages
     {timestamps: true,}
 )
+
+const MessageModel = new mongoose.Schema({
+    message: {
+        text: { type: String, required: true },
+    },
+    users: Array,
+    sender: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+},
+//^ to sort messages
+{timestamps: true,}
+)
     
-module.exports = mongoose.model("Users",messageSchema)
+// module.exports = mongoose.model("Users",messageSchema)
     
     
     //^ message route
@@ -224,7 +239,7 @@ module.exports.getAllMessage = async (req, res, next) => {
 app.post('/addMsg',async(req, res)=>{
     try {
         const {from,to,messages} =req.body;
-    const data = await MessageModel.create({
+        const data = await MessageModel.create({
         message:{text:message},
         users:[from,to],
         //^ sequence 
