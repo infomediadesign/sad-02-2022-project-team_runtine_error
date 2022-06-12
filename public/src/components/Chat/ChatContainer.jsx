@@ -1,11 +1,20 @@
 import React ,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
+<<<<<<< HEAD
 import Logout from '../Logout';
 
+=======
+import Logout from '../Logout/Logout';
+import Messages from './Messages';
+>>>>>>> 878c5208c6de660276fb77d6a86ea462ae7fc6d8
 import { v4 as uuidv4 } from "uuid";
 import axios from 'axios';
 import { getAllMessageRoute, sendMessageRoute } from '../../utils/APIRoutes';
+
+
+
+
 
 export default function ChatContainer({currentChat, currentUser, socket}) {
     const [setMessages,messages]= useState([]);
@@ -93,8 +102,13 @@ return (
                 <div className="username">
                     <h3>{currentChat.username}</h3>
                 </div>
+<<<<<<< HEAD
             </div>
             <Logout />
+=======
+            </div>            
+            
+>>>>>>> 878c5208c6de660276fb77d6a86ea462ae7fc6d8
         </div>
         
         {/* <div className="chat-messages">
@@ -117,7 +131,7 @@ return (
         <ChatInput handleSendMessage={handleSendMessage} />
     </Container>
     )
-    }
+}
 </>
 )
 }

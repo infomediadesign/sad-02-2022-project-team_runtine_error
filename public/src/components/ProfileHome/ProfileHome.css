@@ -37,3 +37,10 @@ h2{
     display:grid;
     font-size: large;
 }
+
+.manageProfile{
+    margin-top: 6.3rem;
+    margin-left: 385px;
+    background-color: rgba(78, 136, 204, 0.1);;
+    height: 600px;
+}

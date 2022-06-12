@@ -287,3 +287,57 @@ io.on("connection",(socket)=>{
         }
     })
 })
+app.post('/questionnaire', async (req, res) => {
+    console.log(req.body);
+    const interestArray=[];
+    const { userName, value } = req.body;
+    const interests = value.split(",");
+    console.log(interests);
+    const ses = driver.session();
+    const resp = await ses.run(`MATCH(I:Interest) RETURN (I)`);
+    resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
+    ses.close();
+    interests.forEach(async (interest) => {
+        const session = driver.session();
+        const intPresent = interestArray.findIndex(rec => rec === interest);
+        if (intPresent === -1) {
+            const newInterest = await session.run(`CREATE (I:Interest{name:'${interest}'}) RETURN (I)`);
+        }
+        const alreadyInterested = await session.run(`MATCH (P:Person{username:'${userName}'}),(I:Interest{name:'${interest}'}) RETURN EXISTS((P)-[:Interested]->(I))`);
+        if (alreadyInterested.records[0]._fields[0]) {
+            console.log("already interested");
+        }
+        else {
+        const intUpdate = await session.run(`MATCH (P:Person{username:'${userName}'}),(I:Interest{name:'${interest}'}) CREATE (P)-[:Interested]->(I)`);
+        console.log(intUpdate);
+        session.close();
+        }
+    });
+    return res.json({ data: "Received" });
+})
+
+
+app.post('/sameinterests', async (req, res) => {
+    const tempPer =[];
+    const {username} = req.body;
+    const interestArray = [];
+    const peopleArray = [];
+    const ses = driver.session();
+    const resp = await ses.run(`MATCH(P:Person{username:'${username}'})-[:Interested]->(I:Interest) RETURN (I)`);
+    resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
+    ses.close();
+    let queryString ='';
+    interestArray.forEach(interest => {
+        queryString = queryString + `I.name='${interest}'`;
+        if(interestArray.indexOf(interest) !== interestArray.length-1){
+            queryString = queryString + ' OR ';
+        }
+    })
+    const session = driver.session();
+    const people = await session.run(`MATCH (P:Person),(I:Interest) WHERE ${queryString} MATCH (P)-[:Interested]->(I) RETURN COLLECT(DISTINCT P)`);
+    people.records[0]._fields[0].forEach(field=>peopleArray.push(field.properties));
+    for(let i=0;i<peopleArray.length;i++){
+        delete peopleArray[i].password;
+    }   
+    return res.json({ peopleArray });
+})
