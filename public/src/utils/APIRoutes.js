@@ -7,3 +7,7 @@ export const ChatRouter = `${host}/Chat`;
 export const allUsersRoute = `${host}/allusers`;
 export const localUser = `${host}/getuser`;
 export const questionnaireRoute =`${host}/questionnaire`;
+
+export const sendMessageRoute = `${host}/addMsg`;
+
+export const getAllMessageRoute = `${host}/messages/getmessage`
