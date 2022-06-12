@@ -52,17 +52,20 @@ position: absolute;
 width: 175px;
 height: 48px;
 margin-left: 4.5rem;
-background: rgba(217, 217, 217, 0.12);
+margin-top: -13rem;
+background: rgba(217, 217, 217, 0.10);
+border: none;
 border-bottom: 4px solid #1F5CA5;
 font-size: large;
 color: #1F5CA5;
+box-shadow: none;
 }
 
 .settingBtn2{
 position: absolute;
 width: 175px;
 height: 48px;
-margin-top: -4rem;
+margin-top: -8rem;
 margin-left: 4.5rem;
 background: rgba(217, 217, 217, 0.12);
 border-bottom: 4px solid #1F5CA5;
@@ -75,11 +78,10 @@ color: #1F5CA5;
     position: absolute;
 width: 175px;
 height: 48px;
-margin-top: -8rem;
+margin-top: -3rem;
 margin-left: 4.5rem;
 background: rgba(217, 217, 217, 0.12);
 border-bottom: 4px solid #1F5CA5;
-
 font-size: large;
 color: #1F5CA5;
 }
@@ -88,7 +90,7 @@ color: #1F5CA5;
     position: absolute;
 width: 175px;
 height: 48px;
-margin-top: -12rem;
+margin-top: 2rem;
 margin-left: 4.5rem;
 background: rgba(217, 217, 217, 0.12);
 border-bottom: 4px solid #1F5CA5;
