@@ -32,10 +32,12 @@ h2{
 }
 
 .settingsLinks{
-    margin-top: 4rem;
+    margin-top: 15rem;
     color: #1F5CA5;
     display:grid;
     font-size: large;
+    border: none;
+    height: 1000px;
 }
 
 .manageProfile{
@@ -43,4 +45,53 @@ h2{
     margin-left: 385px;
     background-color: rgba(78, 136, 204, 0.1);;
     height: 600px;
+}
+
+.settingBtn1{
+position: absolute;
+width: 175px;
+height: 48px;
+margin-left: 4.5rem;
+background: rgba(217, 217, 217, 0.12);
+border-bottom: 4px solid #1F5CA5;
+font-size: large;
+color: #1F5CA5;
+}
+
+.settingBtn2{
+position: absolute;
+width: 175px;
+height: 48px;
+margin-top: -4rem;
+margin-left: 4.5rem;
+background: rgba(217, 217, 217, 0.12);
+border-bottom: 4px solid #1F5CA5;
+
+font-size: large;
+color: #1F5CA5;
+}
+
+.settingBtn3{
+    position: absolute;
+width: 175px;
+height: 48px;
+margin-top: -8rem;
+margin-left: 4.5rem;
+background: rgba(217, 217, 217, 0.12);
+border-bottom: 4px solid #1F5CA5;
+
+font-size: large;
+color: #1F5CA5;
+}
+
+.settingBtn4{
+    position: absolute;
+width: 175px;
+height: 48px;
+margin-top: -12rem;
+margin-left: 4.5rem;
+background: rgba(217, 217, 217, 0.12);
+border-bottom: 4px solid #1F5CA5;
+color: #1F5CA5;
+font-size: large;
 }
