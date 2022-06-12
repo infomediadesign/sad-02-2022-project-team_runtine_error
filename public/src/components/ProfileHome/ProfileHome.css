@@ -13,9 +13,9 @@ image{
     margin-left: 10px;
 }
 
-h2{
-    margin-left: 20px;
-    margin-top: -2.5rem;
+.user{
+    margin-top: -6rem;
+    margin-left: 1rem;
 }
 
 .profileButtons{
@@ -32,68 +32,73 @@ h2{
 }
 
 .settingsLinks{
-    margin-top: 15rem;
     color: #1F5CA5;
-    display:grid;
+    display:contents;
     font-size: large;
     border: none;
-    height: 1000px;
 }
 
 .manageProfile{
-    margin-top: 6.3rem;
+    margin-top: 2rem;
     margin-left: 385px;
-    background-color: rgba(78, 136, 204, 0.1);;
-    height: 600px;
+    background-color: rgba(78, 136, 204, 0.1);
+    height: 540px;
+    width: 85rem;
+    margin-left: 22rem;
 }
 
 .settingBtn1{
 position: absolute;
 width: 175px;
-height: 48px;
-margin-left: 4.5rem;
-margin-top: -13rem;
+height: 40px;
+margin-left: -10rem;
+margin-top: 7rem;
 background: rgba(217, 217, 217, 0.10);
 border: none;
-border-bottom: 4px solid #1F5CA5;
 font-size: large;
 color: #1F5CA5;
 box-shadow: none;
+border-left: 4px solid #1F5CA5;
 }
 
 .settingBtn2{
 position: absolute;
 width: 175px;
-height: 48px;
-margin-top: -8rem;
-margin-left: 4.5rem;
+height: 40px;
+margin-top: 12rem;
+margin-left: -10rem;
+border: none;
 background: rgba(217, 217, 217, 0.12);
-border-bottom: 4px solid #1F5CA5;
-
+border-left: 4px solid #1F5CA5;
 font-size: large;
 color: #1F5CA5;
+box-shadow: none;
 }
 
 .settingBtn3{
     position: absolute;
 width: 175px;
-height: 48px;
-margin-top: -3rem;
-margin-left: 4.5rem;
+height: 40px;
+margin-top: 17rem;
+margin-left: -10rem;
+border: none;
 background: rgba(217, 217, 217, 0.12);
-border-bottom: 4px solid #1F5CA5;
+border-left: 4px solid #1F5CA5;
 font-size: large;
 color: #1F5CA5;
+box-shadow: none;
 }
 
 .settingBtn4{
     position: absolute;
 width: 175px;
-height: 48px;
-margin-top: 2rem;
-margin-left: 4.5rem;
+height: 40px;
+margin-top: 22rem;
+margin-left: -10rem;
+border: none;
 background: rgba(217, 217, 217, 0.12);
-border-bottom: 4px solid #1F5CA5;
+border-left: 4px solid #1F5CA5;
 color: #1F5CA5;
 font-size: large;
+box-shadow: none;
 }

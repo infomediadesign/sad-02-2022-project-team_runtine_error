@@ -6,6 +6,9 @@ import './ProfileHome.css';
 import ManageProfile from '../ManageProfile/ManageProfile';
 import Requests from '../Requests/Requests';
 import Events from '../Events/Events';
+import Chat from '../../components/Chat/Chat';
+import Logout from '../../components/Logout/Logout';
+import SettingsLinks from '../../components/ProfileHome/SettingsLinks';
 
 let stringData;
 let isLoaded = false;
@@ -16,10 +19,9 @@ export default function ProfileHome(){
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentUserImage, setCurrentUserImage] = useState(undefined);
 
-    const [isAddConnection, setIsAddConnection] = useState(false);
-    const [isRequests, setIsRequests] = useState(false);
-    const [isManageProfile, setIsManageProfile] = useState(false);
-    const [isEvents, setIsEvents] = useState(false);
+    const [isSettingsLinks, setIsSettingsLinks] = useState(false);
+    const [isYourConnections, setIsYourConnections] = useState(false);
+
 
     useEffect(()=>{
         var fnc3 = async function(){
@@ -42,53 +44,32 @@ export default function ProfileHome(){
         fnc3();
     },[])
 
-    const add_connection_change = event => {
-        setIsAddConnection(current => !current);
-        setIsRequests(current => false);
-        setIsManageProfile(current => false);
-        setIsEvents(current => false);
+    const setting_links_change = event => {
+        setIsSettingsLinks(current => true);
+        setIsYourConnections(current => false);
     };
 
-    const requests_change = event => {
-        setIsAddConnection(current => false);
-        setIsRequests(current => !current);
-        setIsManageProfile(current => false);
-        setIsEvents(current => false);
-    };
-    
-    const manage_profile_change = event => {
-        setIsAddConnection(current => false);
-        setIsRequests(current => false);
-        setIsManageProfile(current => !current);
-        setIsEvents(current => false);
+    const your_connections_change = event => {
+        setIsSettingsLinks(current => false);
+        setIsYourConnections(current => true);
     };
 
-    const events_change = event => {
-        setIsAddConnection(current => false);
-        setIsRequests(current => false);
-        setIsManageProfile(current => false);
-        setIsEvents(current => !current);
-    }
+
+
 
     return(
+        
         <div className='profileHome'>
+            <Logout />
             <div className='profile'>
             <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" style={{height:"3.5rem", marginRight:"15rem", marginTop:"10px"}} />
-            {isLoaded?(<h2>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
+            {isLoaded?(<h2 style={{marginLeft:"20px", marginTop:"-2.5rem"}}>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
             <div className='profileButtons'>
-                <button className='settings'>Settings</button>
-                <button className='addConnection'>Your Connections</button>
+                <button className='settings' onClick={setting_links_change}>Settings</button>
+                {isSettingsLinks && <SettingsLinks />}
+                <button className='addConnection' onClick={your_connections_change}>Your Connections</button>
+                {isYourConnections && <Chat />}
             </div>
-            <div className='settingsLinks'> 
-            <button className='settingBtn1' onClick={add_connection_change}>Add Connection</button>
-                {isAddConnection && <ManageProfile />}
-            <button className='settingBtn2' onClick={requests_change}>Requests</button>
-                {isRequests && <Requests />}
-            <button className='settingBtn3'onClick={manage_profile_change}>Manage Profile</button>
-                {isManageProfile && <ManageProfile />}
-            <button className='settingBtn4' onClick={events_change}>Events</button>
-                {isEvents && <Events />}
-        </div>
         </div>
         </div>
         
