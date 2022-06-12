@@ -98,13 +98,9 @@ return (
                 <div className="username">
                     <h3>{currentChat.username}</h3>
                 </div>
-
-            </div>
-            <Logout />
-
             </div>            
             
-
+        </div>
         
         {/* <div className="chat-messages">
             {messages.map((message) => {

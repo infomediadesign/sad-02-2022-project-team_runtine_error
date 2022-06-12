@@ -329,7 +329,7 @@ app.post('/questionnaire', async (req, res) => {
         }
     });
     return res.json({ data: "Received" });
-})
+});
 
 
 app.post('/sameinterests', async (req, res) => {
