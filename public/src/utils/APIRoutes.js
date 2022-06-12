@@ -10,3 +10,4 @@ export const questionnaireRoute =`${host}/questionnaire`;
 export const personalDataRoute = `${host}/personalData`;
 export const sendMessageRoute = `${host}/addMsg`;
 export const getAllMessageRoute = `${host}/messages/getmessage`
+export const FriendSuggestionRoute = `${host}/sameinterests`

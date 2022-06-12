@@ -1,0 +1,14 @@
+.Friend{
+    display: block;
+    border: 1px solid brown;
+    margin: 10px;
+    width: 200px;
+    height: 150px;
+    background-color: rgb(136, 136, 230);
+}
+.Holder{
+    position:absolute;
+    width: 1000px;
+    left: 400px;
+    top: 150px;
+}
