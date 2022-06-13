@@ -56,7 +56,7 @@ export default class Questionnaire extends Component {
                 }).then(response=>{console.log(response.data.username);
                     userName = response.data.username;
                         axios.post(`${questionnaireRoute}`, {value, userName}).then(reply=>{console.log(reply);
-                            
+                        window.location.replace("http://localhost:3000/ProfileHome");
                         } )
                     })
             

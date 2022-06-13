@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Robot from "../../assets/robot.gif";
-import Logout from '../Logout/Logout';
 
 export default function Welcome({currentUser}) {
     const [userName, setUserName] = useState("");
+
     useEffect(()=>{
         var fnc5 = async function(){
             
@@ -13,13 +13,12 @@ export default function Welcome({currentUser}) {
 
     return (
     <>
-    
-    <div style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white", flexDirection:"column"}}>
-        <img src={Robot} style={{height: "20rem", marginTop:"20%"}} alt="" />
-        <h1 style={{color:"#1F5CA5", marginTop:"5%"}}>
+    <div style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white", flexDirection:"column", marginTop:"-12rem"}}>
+        <img src={Robot} style={{height: "20rem", marginTop:"8%"}} alt="" />
+        <h1 style={{color:"#1F5CA5", marginTop:"-1%"}}>
             Welcome,  
         </h1>
-       {/* <span style={{color:"black", marginTop:"20%"}}>{currentUser}!</span> */} 
+       {/* <span style={{color:"black", marginTop:"20%"}}>{currentUser.userName}!</span> */} 
         <h3>Please select a chat to Start messaging.</h3>
         </div>
         </>

@@ -43,10 +43,10 @@ export default function LoggedInUser(){
     },[currentUser]);
 
     return(
-        <div className='profileHome'>
-            <div className='profile'>
-            <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" style={{height:"3.5rem", marginRight:"15rem", marginTop:"10px"}} />
-            {isLoaded?(<h2>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
+        <div className='LoggedInUser'>
+            <div className='user'>
+            <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" style={{height:"5rem", marginRight:"80rem", marginTop:"-10rem"}} />
+            {isLoaded?(<h2 style={{width:"10rem", marginLeft:"4.5rem", marginTop:"-3rem"}}>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
            
             </div>
             

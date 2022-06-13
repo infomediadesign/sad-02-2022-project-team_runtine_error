@@ -7,10 +7,6 @@ import Contacts from './Contacts';
 import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
 import {io} from 'socket.io-client';
-import Logout from '../../components/Logout/Logout';
-
-// import {io} from 'socket.io-client';
-
 
 
 export default function Chat() {
@@ -20,18 +16,7 @@ export default function Chat() {
     const [currentChat, setCurrentChat] = useState(undefined);
     const [isLoaded,setIsLoaded] = useState(false);
     const socket = useRef();
-
-    useEffect(()=>{
-        var fnc6 = async function(){
-            if(currentUser){
-                socket.current= io(host);
-                //^ again user id problem
-                //socket.current.emit("add-user",currentUser.id);
-            }
-        };
-        fnc6();
-    },[currentUser]);
-
+    
     useEffect(()=>{
         var fnc3 = async function(){
             if (!localStorage.getItem("chatapp-user")) {
@@ -42,8 +27,6 @@ export default function Chat() {
                 const userDetails = axios.post(localUser, {
                     savedToken
                 }); 
-                // console.log((await userDetails).data);
-                // let stringData= {};
                 const stringData = ((await userDetails).data);
                 setCurrentUser (stringData);
                 setIsLoaded(true);
@@ -51,6 +34,18 @@ export default function Chat() {
         };
         fnc3();
     },[])
+    
+    useEffect(()=>{
+        var fnc6 = async function(){
+            if(currentUser){
+                socket.current= io(host);
+                //^ again user id problem
+                socket.current.emit("add-user",currentUser.id);
+            }
+        };
+        fnc6();
+    },[currentUser]);
+
 
     useEffect(()=>{
         var fnc2 = async function(){
@@ -74,14 +69,13 @@ export default function Chat() {
     return (
         <>
             <Container>
-            <Logout />
                 <div className="container">
                     <div className='contact-container'>
                         <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange}/>
                     </div>
                     <div>
                         {isLoaded && currentChat ===undefined?
-                        (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat} socket={socket} />)}
+                        (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />)}
                     </div>
                 </div>
             </Container>

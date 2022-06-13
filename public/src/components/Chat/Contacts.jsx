@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
 import './Contacts.css'
+import Logout from '../../components/Logout/Logout'
 
 export default function Contacts({contacts,currentUser,changeChat}) {
     const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -27,15 +28,12 @@ export default function Contacts({contacts,currentUser,changeChat}) {
     return <>
         {currentUserImage && currentUserName &&
             (
+                    
+
                 <Container>
                     <div className="content">
                     
-                    <div className="current-user">
-                        <div className="avatar">
-                            <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" />
-                        </div>
-                        <h1 className='currentUser'>{currentUserName}</h1>
-                    </div>  
+                    
                     <div className="contacts">
                         {
                             contacts.map((contact, index) =>{
@@ -60,19 +58,21 @@ export default function Contacts({contacts,currentUser,changeChat}) {
 
 const Container = styled.div`
   position: absolute;
-width: 342px;
-left: 3px;
-top: 110px;
-
+width: 350px;
+height: 612px;
+left: 0.5px;
+top: 8rem;
 background: rgba(78, 136, 204, 0.5);
-border-radius: 26px;
+overflow-y: scroll;
+
         img {
-            height: 3rem;
+            height: 2rem;
             left:2px;
         }
         h3 {
             color: white;
             text-transform: uppercase;
+            font-size: 15px;
         }
     }
     .contacts {
@@ -81,6 +81,7 @@ border-radius: 26px;
     align-items: center;
     overflow: auto;
     gap: 0.8rem;
+    margin-top: 1rem;
     &::-webkit-scrollbar {
         width: 0.2rem;
         &-thumb {
@@ -96,12 +97,10 @@ border-radius: 26px;
     .current-user {
     background-color: #0757AA;
     display:flex;
-    margin-bottom: 20px;
     .avatar {
         img {
-        height: 4rem;
+        height: 3rem;
         margin-left: 20%;
-        margin-top: 5px;
         }
     }
 }
