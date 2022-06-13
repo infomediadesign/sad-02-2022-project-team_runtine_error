@@ -6,6 +6,7 @@ import './ProfileHome.css';
 import ManageProfile from '../ManageProfile/ManageProfile';
 import Requests from '../Requests/Requests';
 import Events from '../Events/Events';
+import FriendSuggestion from '../Chat/FriendSuggestion';
 
 let stringData;
 let isLoaded = false;
@@ -51,13 +52,13 @@ export default function SettingsLinks(){
 
     return(
             <div className='settingsLinks'> 
-            <button className='settingBtn1' onClick={add_connection_change}>Add Connection</button>
-                {isAddConnection && <ManageProfile />}
-            <button className='settingBtn2' onClick={requests_change}>Requests</button>
-                {isRequests && <Requests />}
+            <button className='settingBtn1' onClick={add_connection_change}>Add Connection</button>   
+            <button className='settingBtn2' onClick={requests_change}>Requests</button>   
             <button className='settingBtn3'onClick={manage_profile_change}>Manage Profile</button>
-                {isManageProfile && <ManageProfile />}
             <button className='settingBtn4' onClick={events_change}>Events</button>
+                {isAddConnection && <FriendSuggestion />}
+                {isRequests && <Requests />}
+                {isManageProfile && <ManageProfile />}
                 {isEvents && <Events />}
         </div>
         

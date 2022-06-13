@@ -66,9 +66,10 @@ export default function ProfileHome(){
             {isLoaded?(<h2 style={{marginLeft:"20px", marginTop:"-2.5rem"}}>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
             <div className='profileButtons'>
                 <button className='settings' onClick={setting_links_change}>Settings</button>
-                {isSettingsLinks && <SettingsLinks />}
+                
                 <button className='addConnection' onClick={your_connections_change}>Your Connections</button>
                 {isYourConnections && <Chat />}
+                {isSettingsLinks && <SettingsLinks />}
             </div>
         </div>
         </div>

@@ -171,8 +171,23 @@ const messageSchema = new mongoose.Schema({
     //^ to sort messages
     {timestamps: true,}
 )
+
+const MessageModel = new mongoose.Schema({
+    message: {
+        text: { type: String, required: true },
+    },
+    users: Array,
+    sender: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+},
+//^ to sort messages
+{timestamps: true,}
+)
     
-module.exports = mongoose.model("Users",messageSchema)
+// module.exports = mongoose.model("Users",messageSchema)
     
     
     //^ message route
@@ -224,7 +239,7 @@ module.exports.getAllMessage = async (req, res, next) => {
 app.post('/addMsg',async(req, res)=>{
     try {
         const {from,to,messages} =req.body;
-    const data = await MessageModel.create({
+        const data = await MessageModel.create({
         message:{text:message},
         users:[from,to],
         //^ sequence 
@@ -318,8 +333,7 @@ app.post('/questionnaire', async (req, res) => {
 
 
 app.post('/sameinterests', async (req, res) => {
-    const tempPer =[];
-    const {username} = req.body;
+    const {username} = req.body; 
     const interestArray = [];
     const peopleArray = [];
     const ses = driver.session();
@@ -338,6 +352,23 @@ app.post('/sameinterests', async (req, res) => {
     people.records[0]._fields[0].forEach(field=>peopleArray.push(field.properties));
     for(let i=0;i<peopleArray.length;i++){
         delete peopleArray[i].password;
-    }   
+    }  
+    peopleArray.shift();  
     return res.json({ peopleArray });
+})
+
+app.get('/sameinterests', async (req, res)=>{
+    return res.json({data:"Received"});
+})
+
+
+app.post('/addFriend', async(req, res)=>{
+    const {currentUser, friend} =req.body;
+    // console.log(currentUser, friend);
+    const session = driver.session();
+    const sender = currentUser.username;
+    const receiver = friend.username;
+    const reply = await session.run(`MATCH (P:Person{username:'${sender}'}), (F:Person{username:'${receiver}'}) CREATE (P)-[:Friend]->(F)`);
+    console.log(reply);
+    return res.json({"Reply": "Request Sent"});
 })

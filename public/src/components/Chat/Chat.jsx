@@ -8,8 +8,6 @@ import Welcome from './Welcome';
 import ChatContainer from './ChatContainer';
 import {io} from 'socket.io-client';
 
-// import {io} from 'socket.io-client';
-
 
 export default function Chat() {
     const navigate = useNavigate();
