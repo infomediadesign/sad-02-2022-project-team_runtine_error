@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import LoggedInUser from '../ProfileHome/LoggedInUser';
-import { FriendSuggestionRoute } from '../../utils/APIRoutes';
+import { FriendSuggestionRoute,addFriendRoute } from '../../utils/APIRoutes';
 import FriendCards from './FriendCards';
 import './Styles.css'
 export default function FriendSuggestion(){
@@ -37,8 +37,11 @@ export default function FriendSuggestion(){
 
     return(
         <>
-        <LoggedInUser/>
-        {friends.length>0? (<div className='Holder'>{friends.map((friend)=>(<div className='Friend'><FriendCards friend={friend}/></div>))}</div>):(<h1>No friends found</h1>)}
+        {friends.length>0? (<div className='Holder'>{friends.map((friend)=>(<div className='Friend'><FriendCards friend={friend}/><button className="requestBtn" onClick={()=>{
+            axios.post(addFriendRoute, {currentUser, friend}) ;
+            console.log(currentUser);
+            alert("sent");
+        }}>Add</button></div>))}</div>):(<h1>No friends found</h1>)}
         </>
     )
 

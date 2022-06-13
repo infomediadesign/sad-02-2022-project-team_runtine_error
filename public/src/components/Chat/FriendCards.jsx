@@ -7,7 +7,10 @@ const FriendCards = ({friend})=>{
             <h4>{friend.firstName}</h4>
             <h4>{friend.lastName}</h4>
             <h4>{friend.email}</h4>
+            
         </div>
+        
+
     )
 }
 export default FriendCards;

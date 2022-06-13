@@ -360,3 +360,15 @@ app.post('/sameinterests', async (req, res) => {
 app.get('/sameinterests', async (req, res)=>{
     return res.json({data:"Received"});
 })
+
+
+app.post('/addFriend', async(req, res)=>{
+    const {currentUser, friend} =req.body;
+    // console.log(currentUser, friend);
+    const session = driver.session();
+    const sender = currentUser.username;
+    const receiver = friend.username;
+    const reply = await session.run(`MATCH (P:Person{username:'${sender}'}), (F:Person{username:'${receiver}'}) CREATE (P)-[:Friend]->(F)`);
+    console.log(reply);
+    return res.json({"Reply": "Request Sent"});
+})

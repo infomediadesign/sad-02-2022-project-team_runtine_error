@@ -26,7 +26,7 @@ export default function PersonalData(){
         event.preventDefault();
             const {firstName, lastName, password, username,email,city}=values;
             // console.log("in validation",registerRoute);
-            const {data} = await axios.post(registerRoute,{
+            const {data} = await axios.put(registerRoute,{
                 firstName, lastName, username, email, password, city,
             });
             if(data.status === true){
