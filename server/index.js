@@ -268,3 +268,11 @@ app.post('/questionnaire', async (req, res) => {
     });
     return res.json({ data: "Received" });
 })
+
+app.put('/personalData',async(req,res)=>{
+    const{username, firstName, lastName, email, city} = req.body;
+    const session = driver.session();
+    const reply =await session.run(`MATCH (P:Person{username:'${username}'}) SET P.firstName =' ${firstName}',P.lastName ='${lastName}',P.email='${email}',P.city='${city}'`);
+    session.close();
+    return res.json({reply:"Updated succesfully"});
+})
