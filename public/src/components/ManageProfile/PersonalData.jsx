@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import LoggedInUser from '../ProfileHome/LoggedInUser';
 import './PersonalData.css';
-import { registerRoute } from "../../utils/APIRoutes";
+import { personalDataRoute } from "../../utils/APIRoutes";
 let stringData;
 let isLoaded = false;
 
@@ -16,23 +16,20 @@ export default function PersonalData(){
     const [values, setValues] = useState({
         firstName: "",
         lastName: "",
-        username: "",
         email: "",
         city: "",
-        password: "",
     });
 
     const handleSubmit = async(event)=>{
         event.preventDefault();
-            const {firstName, lastName, password, username,email,city}=values;
+            const { firstName, lastName,email,city}=values;
+            const username = stringData.username;
             // console.log("in validation",registerRoute);
-            const {data} = await axios.put(registerRoute,{
-                firstName, lastName, username, email, password, city,
+            const {data} = await axios.put(personalDataRoute,{
+                username, firstName, lastName, email, city,
             });
-            if(data.status === true){
-                localStorage.setItem('chatapp-user',data.user.token);
-                //& user to local storage and navigate to the chat container
-                alert("Successfully Updated!!")
+            if(data.reply === "Updated successfully"){
+                window.location.replace("http://localhost:3000/ProfileHome");
             }
     };
 
