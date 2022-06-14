@@ -48,13 +48,13 @@ export default function ManageProfile(){
         <div className='manageProfile'>
         <LoggedInUser />
         <button className='profileBtn1' onClick={Personal_data}>Personal Data</button>
-        {isPersonalData && <PersonalData />}
         <button className='profileBtn2' onClick={Bio_data}>Bio</button>
-        {isBio && <ManageBio />}
         <button className='profileBtn3'onClick={Photo_data}>Photos</button>
-        {isPhotos && <ManagePhotos />}
         <button className='profileBtn4' onClick={Interest_data}>Interests</button>
+        {isPersonalData && <PersonalData />}
         {isInterests && <ManageInterests />}
+        {isPhotos && <ManagePhotos />}
+        {isBio && <ManageBio />}
         </div>
         </>
     )

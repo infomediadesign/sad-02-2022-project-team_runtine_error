@@ -115,7 +115,7 @@ function Register() {
                 <label>Confirm Password</label>
                 <input className="registerInput" type="password" placeholder="confirm password" name="confirmPassword" onChange={(e) => handleChange(e)}/>
                 <br></br>
-                <button type="submit">Sign Up</button>
+                <button type="submit" className="registerBtn">Sign Up</button>
                 <span>
                     Already have an account ? <Link to="/">Login.</Link>
                 </span>     

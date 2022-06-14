@@ -5,6 +5,7 @@ import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import LoggedInUser from '../ProfileHome/LoggedInUser';
 import './PersonalData.css';
 import { registerRoute,personalDataRoute } from "../../utils/APIRoutes";
+import { personalDataRoute } from "../../utils/APIRoutes";
 let stringData;
 let isLoaded = false;
 
@@ -16,10 +17,8 @@ export default function PersonalData(){
     const [values, setValues] = useState({
         firstName: "",
         lastName: "",
-        username: "",
         email: "",
         city: "",
-        password: "",
     });
 
     const handleSubmit = async(event)=>{
@@ -28,6 +27,15 @@ export default function PersonalData(){
             const {data} = await axios.put(personalDataRoute,{
                 firstName, lastName, username, email, city,
             });
+            const { firstName, lastName,email,city}=values;
+            const username = stringData.username;
+            // console.log("in validation",registerRoute);
+            const {data} = await axios.put(personalDataRoute,{
+                username, firstName, lastName, email, city,
+            });
+            if(data.reply === "Updated successfully"){
+                window.location.replace("http://localhost:3000/ProfileHome");
+            }
     };
 
     useEffect(()=>{
