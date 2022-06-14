@@ -8,7 +8,12 @@ export const allUsersRoute = `${host}/allusers`;
 export const localUser = `${host}/getuser`;
 export const questionnaireRoute =`${host}/questionnaire`;
 export const personalDataRoute = `${host}/personalData`;
+
+export const sendMessageRoute = `${host}/message/addMsg`;
+export const getAllMessageRoute = `${host}/messages/getMsg`;
+
 export const sendMessageRoute = `${host}/addMsg`;
 export const getAllMessageRoute = `${host}/messages/getmessage`
 export const FriendSuggestionRoute = `${host}/sameinterests`
 export const addFriendRoute = `${host}/addFriend`;
+

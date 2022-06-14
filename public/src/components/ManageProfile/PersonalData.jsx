@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import LoggedInUser from '../ProfileHome/LoggedInUser';
 import './PersonalData.css';
+import { registerRoute,personalDataRoute } from "../../utils/APIRoutes";
 import { personalDataRoute } from "../../utils/APIRoutes";
 let stringData;
 let isLoaded = false;
@@ -22,6 +23,10 @@ export default function PersonalData(){
 
     const handleSubmit = async(event)=>{
         event.preventDefault();
+            const {firstName, lastName, username,email,city}=values;
+            const {data} = await axios.put(personalDataRoute,{
+                firstName, lastName, username, email, city,
+            });
             const { firstName, lastName,email,city}=values;
             const username = stringData.username;
             // console.log("in validation",registerRoute);

@@ -22,6 +22,12 @@ app.post('/register', async (req, res) => {
     const { username, password, email, firstName, lastName, city } = req.body;
     const session = driver.session();
     const existingCheck = await session.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
+
+    if(existingCheck.records.length>0){
+        //console.log(existingCheck.records[0]._fields);
+        if(existingCheck.records[0]._fields[0]===req.body.username)
+        return res.json({message:"Username already in use", status:false})
+
     if (existingCheck.records.length > 0) {
         console.log(existingCheck.records[0]._fields);
         if (existingCheck.records[0]._fields[0] === req.body.username)
@@ -89,7 +95,7 @@ app.get('/allusers/:id', async (req, res) => {
         users.push(userData);
     }
     session.close();
-    console.log(users);
+    //console.log(users);
     return res.json(users);
 })
 
@@ -172,17 +178,52 @@ const messageSchema = new mongoose.Schema({
     { timestamps: true, }
 )
 
-const MessageModel = new mongoose.Schema({
+const MessageSchema = new mongoose.Schema({
     message: {
         text: { type: String, required: true },
     },
     users: Array,
-    sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
+    // sender: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    // },
 },
+
+//^ to sort messages
+{timestamps: true,}
+);
+const MessageModel = mongoose.model('MessageModel',MessageSchema);
+
+console.log(MessageModel.create);
+    
+// module.exports = mongoose.model("Users",messageSchema)
+    
+    
+    //^ message route
+    // router.post("/addMsg/", addMessage);
+    // router.post("/getMsg/", getMessages);
+    
+    // module.exports = router;
+    
+    //^ message controller
+// const addMessage = async (req, res) => {
+//         try {
+//             const {from,to,message} =req.body;
+//         const data = await MessageModel.create({
+//             message:{text:message},
+//             users:[from,to],
+//             //^ sequence 
+//             sender:from,
+//         });
+//         if(data) return res.json({message:"Message added/saved successfully..."});
+        
+//         return res.json({message:"Message failed save to DB"});
+        
+//     } catch (err) {
+//         console.log(err);
+//     }
+// };
+
     //^ to sort messages
     { timestamps: true, }
 )
@@ -215,8 +256,55 @@ module.exports.addMessage = async (req, res, next) => {
     }
 };
 
-module.exports.getAllMessage = async (req, res, next) => {
+
+const getAllMessage = async (req, res) => {
     try {
+
+        const {from,to} =req.body;
+    const message = await MessageModel.find({
+        users:{
+            $all:[from,to],
+        },
+    })
+    .sort({updatedAt:1});
+    const projectedMessages = messages.map((msg) => {
+        return {
+            fromSelf: msg.sender.toString() === from,
+            message: msg.message.text,
+        };
+    });
+    res.json(projectedMessages);
+} catch (err) {
+    console.log(err);
+}
+};
+
+app.post('/message/addMsg',async(req, res)=>{
+    try {
+        console.log(req.body);
+        let {from,to,message} =req.body;
+        console.log("-----------------");
+        console.log(from);
+        console.log(to);
+        console.log(message);
+        console.log("-----------------");
+from = parseInt(from);
+to = parseInt(to);
+        const data = await MessageModel.create({
+        message:{text:message},
+        users:[from,to],
+        //^ sequence 
+        sender:from,
+    });
+    console.log(message);
+    if(data) return res.json({message:"Message added/saved successfully..."});
+    
+    return res.json({message:"Message failed save to DB"});
+    
+} catch (err) {
+    console.log(err);
+    return res.json({message: ''});
+}
         const { from, to } = req.body;
         const message = await MessageModel.find({
             users: {
@@ -255,8 +343,12 @@ app.post('/addMsg', async (req, res) => {
     }
 })
 
-module.exports.getMessages = async (req, res, next) => {
+const getMessages = async (req, res) => {
     try {
+        const {from,to} = req.body;
+        const messages = await MessageModel.find({
+            users:{
+                $all:[from,to]
         const { from, to } = req.body;
         const messages = await messageModel.find({
             users: {
@@ -271,7 +363,7 @@ module.exports.getMessages = async (req, res, next) => {
         });
         res.json(projectMessages);
     } catch (err) {
-        next(err)
+        console.log(err)
     }
 };
 
@@ -294,7 +386,7 @@ io.on("connection", (socket) => {
 
     socket.on("send-message", (data) => {
         const sendUserSocket = onlineUsers.get(data.to);
-        console.log(data);
+        //console.log(data);
         //^If user is online
         if (sendUserSocket) {
             socket.to(sendUserSocket).emit("message-receive", data.message);
@@ -367,6 +459,14 @@ app.post('/sameinterests', async (req, res) => {
     peopleArray.shift();
     return res.json({ peopleArray });
 })
+
+
+app.put('/personalData',async(req,res)=>{
+    const{username, firstName, lastName, email, city} = req.body;
+    const session = driver.session();
+    const reply =await session.run(`MATCH (P:Person{username:'${username}'}) SET P.firstName =' ${firstName}',P.lastName ='${lastName}',P.email='${email}',P.city='${city}'`);
+    session.close();
+    return res.json({reply:"Updated succesfully"});
 
 app.get('/sameinterests', async (req, res) => {
     return res.json({ data: "Received" });
