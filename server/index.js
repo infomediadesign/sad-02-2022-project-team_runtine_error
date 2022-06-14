@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 const server = http.createServer(app);
-const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
+const driver = neo.driver('neo4j+s://b7be1229.databases.neo4j.io', neo.auth.basic('neo4j', '_vGX2qSJ4ZV-Lah7CqadE8XkvNpDI8N00G8AlKrHhz8'));
 
 server.listen(5000,()=>{console.log("Server started on 5000")});
 
@@ -24,7 +24,6 @@ app.post('/register', async(req,res)=>{
     const session = driver.session();
     const existingCheck = await session.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
     if(existingCheck.records.length>0){
-        //console.log(existingCheck.records[0]._fields);
         if(existingCheck.records[0]._fields[0]===req.body.username)
         return res.json({message:"Username already in use", status:false})
         else
@@ -90,7 +89,6 @@ app.get('/allusers/:id', async(req,res)=>{
         users.push(userData);
     }
     session.close();
-    //console.log(users);
     return res.json(users);
 })
 
@@ -175,7 +173,6 @@ const MessageSchema = new mongoose.Schema({
 );
 const MessageModel = mongoose.model('MessageModel',MessageSchema);
 
-console.log(MessageModel.create);
     
 
 
@@ -202,7 +199,6 @@ const getAllMessage = async (req, res) => {
 
 app.post('/message/addMsg',async(req, res)=>{
     try {
-        console.log(req.body);
         let {from,to,message} =req.body;
 from = parseInt(from);
 to = parseInt(to);
@@ -224,7 +220,6 @@ to = parseInt(to);
 })
 
 app.post('/messages/getMsg', async (req, res) => {
-    console.log(req.body);
     try {
         let {from,to} = req.body;
 
@@ -276,11 +271,9 @@ io.on("connection",(socket)=>{
     })
 })
 app.post('/questionnaire', async (req, res) => {
-    console.log(req.body);
     const interestArray=[];
     const { userName, value } = req.body;
     const interests = value.split(",");
-    console.log(interests);
     const ses = driver.session();
     const resp = await ses.run(`MATCH(I:Interest) RETURN (I)`);
     resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
@@ -297,7 +290,6 @@ app.post('/questionnaire', async (req, res) => {
         }
         else {
         const intUpdate = await session.run(`MATCH (P:Person{username:'${userName}'}),(I:Interest{name:'${interest}'}) CREATE (P)-[:Interested]->(I)`);
-        console.log(intUpdate);
         session.close();
         }
     });
