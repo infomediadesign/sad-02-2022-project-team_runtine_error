@@ -187,7 +187,7 @@ const getAllMessage = async (req, res) => {
     .sort({updatedAt:1});
     const projectedMessages = messages.map((msg) => {
         return {
-            fromSelf: msg.sender === from,
+            fromSelf: (msg.sender === from),
             message: msg.message.text,
         };
     });
@@ -329,8 +329,35 @@ app.post('/sameinterests', async (req, res) => {
 app.put('/personalData',async(req,res)=>{
     const{username, firstName, lastName, email, city} = req.body;
     const session = driver.session();
-    const reply =await session.run(`MATCH (P:Person{username:'${username}'}) SET P.firstName =' ${firstName}',P.lastName ='${lastName}',P.email='${email}',P.city='${city}'`);
+    const sender = currentUser.username;
+    const receiver = friend.username;
+    const reply = await session.run(`MATCH (P:Person{username:'${sender}'}), (F:Person{username:'${receiver}'}) CREATE (P)-[:Friend]->(F)`);
+    return res.json({"Reply": "Request Sent"});
+})
+
+app.post('/addBio', async(req, res)=>{
+    console.log(req.body);
+    const {username, isBio} = req.body;
+    const session = driver.session();
+    const reply = await session.run(`MATCH (P:Person{username:'${username}'}) SET P.bio = '${isBio}' RETURN (P)`);
+    session.close();
+    return res.json({status:"ok"});
+})
+
+app.post('/addEvents', async(req,res) => {
+    console.log(req.body);
+    const {eventName, description, date , time , location, contact} =req.body;
+    const session = driver.session();
+    const reply =await session.run(`CREATE (E:Event{name:'${eventName}' ,description:'${description}', date:'${date}', time:'${time}', location:'${location}', contact:'${contact}'}) RETURN (E)`);
     session.close();
     return res.json({reply:"Updated succesfully"});
 
+})
+app.get('/allEvents',async(req,res)=>{
+    const session = driver.session();
+    const reply = await session.run(`MATCH (E:Event) RETURN (E)`);
+    const events =[];
+    reply.records.forEach(rec=>{events.push(rec._fields[0].properties)});
+    console.log(events);
+    return res.json({events});
 })

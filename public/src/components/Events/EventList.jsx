@@ -3,14 +3,13 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { allUsersRoute, localUser } from '../../utils/APIRoutes';
 import LoggedInUser from '../ProfileHome/LoggedInUser';
-import { FriendSuggestionRoute,addFriendRoute } from '../../utils/APIRoutes';
-import FriendCards from './FriendCards';
-import './Styles.css'
-export default function FriendSuggestion(){
+import { eventListRoute, eventsRoute  } from '../../utils/APIRoutes';
+import EventCard from './EventCard';
+
+const EventList = ({event})=>{
     const navigate = useNavigate();
     var username;
-    const [currentUser, setCurrentUser] = useState(undefined);
-    const [friends, setFriends] = useState([]);
+    const [events, setEvents] = useState([]);
     const [isLoaded,setIsLoaded] = useState(false);
         useEffect(()=>{
         var fnc3 = async function(){
@@ -23,11 +22,10 @@ export default function FriendSuggestion(){
                     savedToken
                 }); 
                 const stringData = ((await userDetails).data);
-                setCurrentUser (stringData);
                 username = stringData.username;
-                setIsLoaded(true);
-                const allFriends = await axios.post(FriendSuggestionRoute,{username});
-                setFriends(allFriends.data.peopleArray);
+                const allEvents = await axios.get(eventListRoute);
+                setEvents(allEvents.data.events);
+                console.log(allEvents);
                 setIsLoaded(true);
             }
         };
@@ -35,15 +33,11 @@ export default function FriendSuggestion(){
 
     },[])
 
+
     return(
         <>
-        {friends.length>0? (<div className='Holder'>{friends.map((friend)=>(<div className='Friend'><FriendCards friend={friend}/><button className="requestBtn"  onClick={(e)=>{
-            axios.post(addFriendRoute, {currentUser, friend}) ;
-            console.log(currentUser.friend);
-            alert("sent");
-            e.target.disbaled = true;
-        }}>Add</button></div>))}</div>):(<h1>..</h1>)}
+        {events.length>0? (<div className='eventsHolder'>{events.map((event)=>(<div className='Event'><EventCard event={event}/></div>))}</div>):(<h1>..</h1>)}
         </>
     )
-
 }
+export default EventList;

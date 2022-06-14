@@ -1,9 +1,6 @@
 import React ,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
-
-
-import Logout from '../Logout/Logout';
 import { v4 as uuidv4 } from "uuid";
 import axios from 'axios';
 import { getAllMessageRoute, sendMessageRoute } from '../../utils/APIRoutes';
@@ -157,7 +154,8 @@ overflow: hidden;
 
         .username {
             h3 {
-                color: white;
+                color: 1F5CA5;
+                margin-top: -1rem;
             }
         }
     }
@@ -168,7 +166,10 @@ overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin:
+    width: 1000px;
     overflow: auto;
+    margin-top: 13rem;
 
     .message {
         display: flex;
@@ -192,7 +193,7 @@ overflow: hidden;
         justify-content: flex-end;
 
         .content {
-            background-color: #4f04ff21;
+            background-color: navy;
         }
     }
 
@@ -200,7 +201,7 @@ overflow: hidden;
         justify-content: flex-start;
 
         .content {
-            background-color: #9900ff20;
+            background-color: navy;
         }
     }
 }

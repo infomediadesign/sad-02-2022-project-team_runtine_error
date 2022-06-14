@@ -60,8 +60,8 @@ const Container = styled.div`
   position: absolute;
 width: 350px;
 height: 612px;
-left: 0.5px;
-top: 8rem;
+left: 1px;
+top: 7.4rem;
 background: rgba(78, 136, 204, 0.5);
 overflow-y: scroll;
 
@@ -70,7 +70,7 @@ overflow-y: scroll;
             left:2px;
         }
         h3 {
-            color: white;
+            color: 1F5CA5;
             text-transform: uppercase;
             font-size: 15px;
         }
@@ -108,6 +108,7 @@ overflow-y: scroll;
         gap: 0.5rem;
         .username {
         h2 {
+            
             font-size: 1rem;
         }
         }

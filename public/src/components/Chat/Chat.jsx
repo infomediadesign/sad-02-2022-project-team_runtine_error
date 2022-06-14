@@ -69,7 +69,6 @@ export default function Chat() {
     return (
         <>
             <Container>
-                <div className="container">
                     <div className='contact-container'>
                         <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange}/>
                     </div>
@@ -77,33 +76,51 @@ export default function Chat() {
                         {isLoaded && currentChat ===undefined?
                         (<Welcome currentUser={currentUser}/>): (<ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />)}
                     </div>
-                </div>
             </Container>
         </>
     )
 }
 
 const Container = styled.div`
-    height: 100vh;
-    width: 100vw;
+    width: 1000px;
+    height: 750px;
     display: flex;
+    margin-left: 25rem;
+    margin-top: -8rem;
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
     align-items: center;
     background-color: white;
-    .container {
-        height: 85vh;
-        width: 85vw;
-        background-color: white;
-        display: grid;
-        grid-template-columns: 25% 75%;
-        @media screen and (min-width: 720px) and (max-width: 1080px) {
-            grid-template-columns: 35% 65%;
-        }
-        .contact-container{
-        height:100vh;
-    }
-    }
-    
+
+
+justify-content: center;
+
+gap: 1rem;
+
+align-items: center;
+
+background-color: white;
+
+.container {
+
+height: 85px;
+
+width: 85px;
+
+background-color: #00000076;
+
+display: grid;
+
+grid-template-columns: 25% 75%;
+
+@media screen and (min-width: 720px) and (max-width: 1080px) {
+
+grid-template-columns: 35% 65%;
+
+}
+
+}
+
 `;
+

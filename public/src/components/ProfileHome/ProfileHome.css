@@ -73,7 +73,7 @@ box-shadow: none;
 border-left: 4px solid #1F5CA5;
 }
 
-.settingBtn2{
+.settingBtn3{
 position: absolute;
 width: 175px;
 height: 40px;
@@ -87,25 +87,13 @@ color: #1F5CA5;
 box-shadow: none;
 }
 
-.settingBtn3{
-    position: absolute;
-width: 175px;
-height: 40px;
-margin-top: 17rem;
-margin-left: -15rem;
-border: none;
-background: rgba(217, 217, 217, 0.12);
-border-left: 4px solid #1F5CA5;
-font-size: large;
-color: #1F5CA5;
-box-shadow: none;
-}
+
 
 .settingBtn4{
     position: absolute;
 width: 175px;
 height: 40px;
-margin-top: 22rem;
+margin-top: 17rem;
 margin-left: -15rem;
 border: none;
 background: rgba(217, 217, 217, 0.12);
