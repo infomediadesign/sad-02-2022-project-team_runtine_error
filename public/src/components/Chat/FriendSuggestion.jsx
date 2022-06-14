@@ -37,11 +37,13 @@ export default function FriendSuggestion(){
 
     return(
         <>
-        {friends.length>0? (<div className='Holder'>{friends.map((friend)=>(<div className='Friend'><FriendCards friend={friend}/><button className="requestBtn" onClick={()=>{
+        {friends.length>0 ? (<div className='Holder'>{friends.map((friend)=>(
+        <div className='Friend'><FriendCards friend={friend}/><button className="requestBtn" onClick={(e)=>{
             axios.post(addFriendRoute, {currentUser, friend}) ;
             console.log(currentUser);
             alert("sent");
-        }}>Add</button></div>))}</div>):(<h1>No friends found</h1>)}
+            e.target.disabled = true;
+        }}>Add</button></div>))}</div>):(<h1>.</h1>)}
         </>
     )
 

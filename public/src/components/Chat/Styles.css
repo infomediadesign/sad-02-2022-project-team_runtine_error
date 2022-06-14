@@ -1,5 +1,5 @@
 .Friend{
-    display: block;
+    display: -ms-inline-flexbox;
     border: 1px solid brown;
     margin: 10px;
     width: 200px;
@@ -8,8 +8,10 @@
     
 }
 .Holder{
-    position:absolute;
-    width: 1000px;
+    display: inline-flex;
+    position:relative;
+    max-width: 600px;
+    height: 200px;
+    flex-direction: row;
     left: 400px;
-    top: 150px;
 }
