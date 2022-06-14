@@ -12,3 +12,5 @@ export const sendMessageRoute = `${host}/addMsg`;
 export const getAllMessageRoute = `${host}/messages/getmessage`
 export const FriendSuggestionRoute = `${host}/sameinterests`
 export const addFriendRoute = `${host}/addFriend`;
+export const addBioRoute = `${host}/addBio`;
+export const eventsRoute = `${host}/addEvents`;

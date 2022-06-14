@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { allUsersRoute, localUser } from '../../utils/APIRoutes';
@@ -15,6 +15,7 @@ let isLoaded = false;
 
 
 export default function ProfileHome(){
+    const buttonRef = useRef(null);
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentUserImage, setCurrentUserImage] = useState(undefined);
@@ -25,6 +26,7 @@ export default function ProfileHome(){
 
     useEffect(()=>{
         var fnc3 = async function(){
+            buttonRef.current.click();
             if (!localStorage.getItem("chatapp-user")) {
                 navigate("/login");
             }
@@ -55,8 +57,6 @@ export default function ProfileHome(){
     };
 
 
-
-
     return(
         
         <div className='profileHome'>
@@ -65,7 +65,7 @@ export default function ProfileHome(){
             <img src={`data:image/svg+xml;base64,${currentUserImage}`} alt="" style={{height:"3.5rem", marginRight:"15rem", marginTop:"10px"}} />
             {isLoaded?(<h2 style={{marginLeft:"20px", marginTop:"-2.5rem"}}>{stringData.firstName} {stringData.lastName}</h2>):(<h1>Not welcome</h1>)}
             <div className='profileButtons'>
-                <button className='settings' onClick={setting_links_change}>Settings</button>
+                <button className='settings' ref={buttonRef} onClick={setting_links_change}>Settings</button>
                 
                 <button className='addConnection' onClick={your_connections_change}>Your Connections</button>
                 {isYourConnections && <Chat />}

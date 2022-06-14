@@ -1,15 +1,34 @@
 .Friend{
-    display: block;
-    border: 1px solid brown;
     margin: 10px;
-    width: 200px;
-    height: 150px;
-    background-color: rgb(136, 136, 230);
+    box-sizing: border-box;
+    width: 209px;
+    height: 226px;
+    left: 973px;
+    top: 199px;
+    background: rgba(31, 92, 165, 0.27);
+    display:inline-flex;
     
 }
 .Holder{
+    align-self: flex-start;
     position:absolute;
-    width: 1000px;
     left: 400px;
-    top: 150px;
+    top: 2.5rem;
+    width: 1000px;
+    height: 1000px;
+    overflow-y:scroll; 
+    display: inline-block;
+    border: none;
+    
+}
+
+.requestBtn{
+    margin-left: -21.3rem;
+    height: 40px;
+    width: 12rem ;
+    margin-top: 11rem;
+    background-color: #1F5CA5;
+    color: white;
+    border: none;
+    font-size: medium;
 }

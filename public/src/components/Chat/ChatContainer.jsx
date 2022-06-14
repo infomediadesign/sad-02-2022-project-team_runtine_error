@@ -156,7 +156,8 @@ overflow: hidden;
 
         .username {
             h3 {
-                color: white;
+                color: 1F5CA5;
+                margin-top: -1rem;
             }
         }
     }

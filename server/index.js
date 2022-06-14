@@ -372,3 +372,16 @@ app.post('/addFriend', async(req, res)=>{
     console.log(reply);
     return res.json({"Reply": "Request Sent"});
 })
+
+app.post('/addBio', async(req, res)=>{
+    console.log(req.body);
+    const {username, isBio} = req.body;
+    const session = driver.session();
+    const reply = await session.run(`MATCH (P:Person{username:'${username}'}) SET P.bio = '${isBio}' RETURN (P)`);
+    session.close();
+    return res.json({status:"ok"});
+})
+
+app.post('/addEvents', async(req,res) => {
+    console.log(req.body);
+})

@@ -58,8 +58,10 @@ const Container = styled.div`
     display: grid;
     align-items: center;
     grid-template-columns: 5% 95%;
-    background-color: #07575B;
+    background-color: rgba(78, 136, 204, 0.1);
     padding: 0 2rem;
+    width: 1000px;
+    margin-left: -10rem;
 
     @media screen and (min-width: 720px) and (max-width: 1080px) {
         padding: 0 1rem;
@@ -75,6 +77,8 @@ const Container = styled.div`
 
         .emoji {
             position: relative;
+            margin-top: 20.5rem;
+            margin-left: 10rem;
 
             svg {
                 font-size: 1.5rem;
@@ -116,7 +120,10 @@ const Container = styled.div`
         }
     }
     .type-box{
-        height:70vh;
+        height:100px;
+        width: 750px;
+        margin-left: 9rem;
+        margin-top: 24rem;
     }
 
     .input-container {
@@ -125,19 +132,19 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         gap: 2rem;
-        background-color: #ffffff34;
+        background-color: white;
 
         input {
             width: 90%;
             height: 60%;
             background-color: transparent;
-            color: white;
+            color: black;
             border: none;
             padding-left: 1rem;
             font-size: 1.2rem;
 
             &::selection {
-                background-color: #9a86f3;
+                background-color: 1F5CA5;
             }
 
             &:focus {
@@ -151,7 +158,7 @@ const Container = styled.div`
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #9a86f3;
+            background-color: navy;
             border: none;
 
             @media screen and (min-width: 720px) and (max-width: 1080px) {
