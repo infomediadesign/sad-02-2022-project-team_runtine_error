@@ -13,7 +13,7 @@ import { getAllMessageRoute, sendMessageRoute } from '../../utils/APIRoutes';
 
 
 export default function ChatContainer({currentChat, currentUser, socket}) {
-    const [setMessages,messages]= useState([]);
+    const [messages,setMessages]= useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
     //^ REF will scroll into the view the new messages  
     const scrollRef = useRef();
@@ -102,10 +102,10 @@ return (
             
         </div>
         
-        {/* <div className="chat-messages">
+        <div className="chat-messages">
             {messages.map((message) => {
             return (
-                <div ref={scrollRef} key={uuidv4()}>
+                <div>
                 <div
                     className={`message ${
                     message.fromSelf ? "sended" : "received"
@@ -118,7 +118,8 @@ return (
                 </div>
             );
             })}
-        </div> */}
+        </div>
+        {console.log(messages)}
         <ChatInput handleSendMessage={handleSendMessage} />
     </Container>
     )
