@@ -73,12 +73,13 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         color: white;
+        margin: 3rem;
         gap: 1rem;
 
         .emoji {
             position: relative;
-            margin-top: 20.5rem;
-            margin-left: 10rem;
+            margin-top: -9rem;
+            margin-left: 7rem;
 
             svg {
                 font-size: 1.5rem;
@@ -123,7 +124,7 @@ const Container = styled.div`
         height:100px;
         width: 750px;
         margin-left: 9rem;
-        margin-top: 24rem;
+        margin-top: -3em;
     }
 
     .input-container {

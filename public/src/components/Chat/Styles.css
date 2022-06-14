@@ -1,10 +1,8 @@
 .Friend{
     margin: 10px;
-    box-sizing: border-box;
+    flex-wrap: wrap;
     width: 209px;
-    height: 226px;
-    left: 973px;
-    top: 199px;
+    text-align: center;
     background: rgba(31, 92, 165, 0.27);
     display:inline-flex;
     

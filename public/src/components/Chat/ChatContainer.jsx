@@ -1,9 +1,6 @@
 import React ,{useEffect, useState,useRef} from 'react'
 import styled from 'styled-components'
 import ChatInput from './ChatInput';
-
-
-import Logout from '../Logout/Logout';
 import { v4 as uuidv4 } from "uuid";
 import axios from 'axios';
 import { getAllMessageRoute, sendMessageRoute } from '../../utils/APIRoutes';
@@ -13,7 +10,7 @@ import { getAllMessageRoute, sendMessageRoute } from '../../utils/APIRoutes';
 
 
 export default function ChatContainer({currentChat, currentUser, socket}) {
-    const [setMessages,messages]= useState([]);
+    const [messages,setMessages]= useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
     //^ REF will scroll into the view the new messages  
     const scrollRef = useRef();
@@ -102,10 +99,10 @@ return (
             
         </div>
         
-        {/* <div className="chat-messages">
+        <div className="chat-messages">
             {messages.map((message) => {
             return (
-                <div ref={scrollRef} key={uuidv4()}>
+                <div>
                 <div
                     className={`message ${
                     message.fromSelf ? "sended" : "received"
@@ -118,7 +115,8 @@ return (
                 </div>
             );
             })}
-        </div> */}
+        </div>
+        {console.log(messages)}
         <ChatInput handleSendMessage={handleSendMessage} />
     </Container>
     )
@@ -168,7 +166,10 @@ overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin:
+    width: 1000px;
     overflow: auto;
+    margin-top: 13rem;
 
     .message {
         display: flex;
@@ -192,7 +193,7 @@ overflow: hidden;
         justify-content: flex-end;
 
         .content {
-            background-color: #4f04ff21;
+            background-color: navy;
         }
     }
 
@@ -200,7 +201,7 @@ overflow: hidden;
         justify-content: flex-start;
 
         .content {
-            background-color: #9900ff20;
+            background-color: navy;
         }
     }
 }

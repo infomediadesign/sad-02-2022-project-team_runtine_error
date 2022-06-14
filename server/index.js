@@ -8,12 +8,13 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const socket = require("socket.io");
 const http = require ('http');
+const { Router } = require('express');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 const server = http.createServer(app);
-const driver = neo.driver('bolt://localhost:7687',neo.auth.basic('neo4j','admin'));
+const driver = neo.driver('neo4j+s://b7be1229.databases.neo4j.io', neo.auth.basic('neo4j', '_vGX2qSJ4ZV-Lah7CqadE8XkvNpDI8N00G8AlKrHhz8'));
 
 server.listen(5000,()=>{console.log("Server started on 5000")});
 
@@ -23,7 +24,6 @@ app.post('/register', async(req,res)=>{
     const session = driver.session();
     const existingCheck = await session.run(`MATCH (P:Person) WHERE P.email='${email}' or P.username = '${username}' RETURN (P.username), (P.email)`);
     if(existingCheck.records.length>0){
-        console.log(existingCheck.records[0]._fields);
         if(existingCheck.records[0]._fields[0]===req.body.username)
         return res.json({message:"Username already in use", status:false})
         else
@@ -89,7 +89,6 @@ app.get('/allusers/:id', async(req,res)=>{
         users.push(userData);
     }
     session.close();
-    console.log(users);
     return res.json(users);
 })
 
@@ -157,65 +156,27 @@ mongoose.connect(process.env.MONGO_URL,{
 
 //^ message model
 
-const messageSchema = new mongoose.Schema({
-        message: {
-            text: { type: String, required: true },
-        },
-        users: Array,
-        sender: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-        },
-    },
-    //^ to sort messages
-    {timestamps: true,}
-)
 
-const MessageModel = new mongoose.Schema({
+
+const MessageSchema = new mongoose.Schema({
     message: {
         text: { type: String, required: true },
     },
-    users: Array,
+    users: [mongoose.Schema.Types.Number],
     sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        type: mongoose.Schema.Types.Number,
         required: true,
     },
 },
 //^ to sort messages
 {timestamps: true,}
-)
-    
-// module.exports = mongoose.model("Users",messageSchema)
-    
-    
-    //^ message route
-    // router.post("/addMsg/", addMessage);
-    // router.post("/getMsg/", getMessages);
-    
-    // module.exports = router;
-    
-    //^ message controller
-module.exports.addMessage = async (req, res, next) => {
-        try {
-            const {from,to,messages} =req.body;
-        const data = await MessageModel.create({
-            message:{text:message},
-            users:[from,to],
-            //^ sequence 
-            sender:from,
-        });
-        if(data) return res.json({message:"Message added/saved successfully..."});
-        
-        return res.json({message:"Message failed save to DB"});
-        
-    } catch (err) {
-        next(err);
-    }
-};
+);
+const MessageModel = mongoose.model('MessageModel',MessageSchema);
 
-module.exports.getAllMessage = async (req, res, next) => {
+    
+
+
+const getAllMessage = async (req, res) => {
     try {
         const {from,to} =req.body;
     const message = await MessageModel.find({
@@ -226,54 +187,61 @@ module.exports.getAllMessage = async (req, res, next) => {
     .sort({updatedAt:1});
     const projectedMessages = messages.map((msg) => {
         return {
-            fromSelf: msg.sender.toString() === from,
+            fromSelf: (msg.sender === from),
             message: msg.message.text,
         };
     });
     res.json(projectedMessages);
 } catch (err) {
-    next(err);
+    console.log(err);
 }
 };
 
-app.post('/addMsg',async(req, res)=>{
+app.post('/message/addMsg',async(req, res)=>{
     try {
-        const {from,to,messages} =req.body;
+        let {from,to,message} =req.body;
+from = parseInt(from);
+to = parseInt(to);
         const data = await MessageModel.create({
         message:{text:message},
         users:[from,to],
         //^ sequence 
         sender:from,
     });
-    console.log(messages);
+    console.log(message);
     if(data) return res.json({message:"Message added/saved successfully..."});
     
     return res.json({message:"Message failed save to DB"});
     
 } catch (err) {
     console.log(err);
+    return res.json({message: ''});
 }
 })
 
-module.exports.getMessages = async (req, res, next) => {
+app.post('/messages/getMsg', async (req, res) => {
     try {
-        const {from,to} = req.body;
-        const messages = await messageModel.find({
+        let {from,to} = req.body;
+
+        const messages = await MessageModel.find({
             users:{
                 $all:[from,to]
             },
         }).sort({updatedAt: 1});
-        const projectMessages = messages.map((message)=>{
+        const projectMessages = messages.map((messages)=>{
+    
             return{
-                fromSelf: message.sender.toString() ===from,
-                message:message.message.text,
+                fromSelf: (messages.sender ===from),
+                message:messages.message.text,
             };
         });
         res.json(projectMessages);
     } catch (err) {
-        next(err)
+        console.log(err)
     }
-};
+});
+
+
 
 const io = socket(server, {
     cors: {
@@ -294,7 +262,7 @@ io.on("connection",(socket)=>{
 
     socket.on("send-message",(data)=>{
         const sendUserSocket = onlineUsers.get(data.to);
-        console.log(data);
+        //console.log(data);
         //^If user is online
         if(sendUserSocket){
             socket.to(sendUserSocket).emit("message-receive",data.message);
@@ -303,11 +271,9 @@ io.on("connection",(socket)=>{
     })
 })
 app.post('/questionnaire', async (req, res) => {
-    console.log(req.body);
     const interestArray=[];
     const { userName, value } = req.body;
     const interests = value.split(",");
-    console.log(interests);
     const ses = driver.session();
     const resp = await ses.run(`MATCH(I:Interest) RETURN (I)`);
     resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
@@ -324,7 +290,6 @@ app.post('/questionnaire', async (req, res) => {
         }
         else {
         const intUpdate = await session.run(`MATCH (P:Person{username:'${userName}'}),(I:Interest{name:'${interest}'}) CREATE (P)-[:Interested]->(I)`);
-        console.log(intUpdate);
         session.close();
         }
     });
@@ -333,43 +298,40 @@ app.post('/questionnaire', async (req, res) => {
 
 
 app.post('/sameinterests', async (req, res) => {
-    const {username} = req.body; 
+    const { username } = req.body;
     const interestArray = [];
     const peopleArray = [];
     const ses = driver.session();
     const resp = await ses.run(`MATCH(P:Person{username:'${username}'})-[:Interested]->(I:Interest) RETURN (I)`);
     resp.records.forEach(rec => interestArray.push(rec._fields[0].properties.name));
     ses.close();
-    let queryString ='';
+    let queryString = '';
     interestArray.forEach(interest => {
         queryString = queryString + `I.name='${interest}'`;
-        if(interestArray.indexOf(interest) !== interestArray.length-1){
+        if (interestArray.indexOf(interest) !== interestArray.length - 1) {
             queryString = queryString + ' OR ';
         }
     })
     const session = driver.session();
     const people = await session.run(`MATCH (P:Person),(I:Interest) WHERE ${queryString} MATCH (P)-[:Interested]->(I) RETURN COLLECT(DISTINCT P)`);
-    people.records[0]._fields[0].forEach(field=>peopleArray.push(field.properties));
-    for(let i=0;i<peopleArray.length;i++){
+    people.records[0]._fields[0].forEach(field => {peopleArray.push(field.properties)});
+    let delIndex;
+    for (let i = 0; i < peopleArray.length; i++) {
+        if(peopleArray[i].username === username)
+            delIndex = i;
         delete peopleArray[i].password;
-    }  
-    peopleArray.shift();  
+    } 
+    peopleArray.splice(delIndex,1);
     return res.json({ peopleArray });
 })
 
-app.get('/sameinterests', async (req, res)=>{
-    return res.json({data:"Received"});
-})
 
-
-app.post('/addFriend', async(req, res)=>{
-    const {currentUser, friend} =req.body;
-    // console.log(currentUser, friend);
+app.put('/personalData',async(req,res)=>{
+    const{username, firstName, lastName, email, city} = req.body;
     const session = driver.session();
     const sender = currentUser.username;
     const receiver = friend.username;
     const reply = await session.run(`MATCH (P:Person{username:'${sender}'}), (F:Person{username:'${receiver}'}) CREATE (P)-[:Friend]->(F)`);
-    console.log(reply);
     return res.json({"Reply": "Request Sent"});
 })
 
@@ -384,4 +346,18 @@ app.post('/addBio', async(req, res)=>{
 
 app.post('/addEvents', async(req,res) => {
     console.log(req.body);
+    const {eventName, description, date , time , location, contact} =req.body;
+    const session = driver.session();
+    const reply =await session.run(`CREATE (E:Event{name:'${eventName}' ,description:'${description}', date:'${date}', time:'${time}', location:'${location}', contact:'${contact}'}) RETURN (E)`);
+    session.close();
+    return res.json({reply:"Updated succesfully"});
+
+})
+app.get('/allEvents',async(req,res)=>{
+    const session = driver.session();
+    const reply = await session.run(`MATCH (E:Event) RETURN (E)`);
+    const events =[];
+    reply.records.forEach(rec=>{events.push(rec._fields[0].properties)});
+    console.log(events);
+    return res.json({events});
 })

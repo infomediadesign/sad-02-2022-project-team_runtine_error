@@ -42,7 +42,7 @@ export default function FriendSuggestion(){
             console.log(currentUser.friend);
             alert("sent");
             e.target.disbaled = true;
-        }} >Add</button></div>))}</div>):(<h1>..</h1>)}
+        }}>Add</button></div>))}</div>):(<h1>..</h1>)}
         </>
     )
 

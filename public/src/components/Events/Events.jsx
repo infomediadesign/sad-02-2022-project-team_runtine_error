@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//^ axios for api calling && we can call fetch api by script
-import axios from 'axios';
-import { eventsRoute } from "../../utils/APIRoutes";
+
 import CreateEvent from './CreateEvent';
 import EventList from "./EventList";
 import './Events.css';
