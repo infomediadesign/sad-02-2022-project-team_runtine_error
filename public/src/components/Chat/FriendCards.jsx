@@ -6,6 +6,7 @@ const FriendCards = ({friend})=>{
             <img src={`data:image/svg+xml;base64,${friend.avatarImage}`} alt="" style={{height:"6.5rem", marginRight:"12rem", marginLeft:"3.3rem", marginTop:"10px"}} />
             <h4 >{friend.firstName}</h4>
             <h4 >{friend.lastName}</h4>
+            <h4>Dist: {friend.dist} KMs</h4>
         </div>
     )
 }
