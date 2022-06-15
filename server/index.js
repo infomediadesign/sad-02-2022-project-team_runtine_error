@@ -298,7 +298,8 @@ app.post('/questionnaire', async (req, res) => {
 
 
 app.post('/sameinterests', async (req, res) => {
-    const { username } = req.body;
+    const { username, lat, lon } = req.body;
+    console.log(lat,lon);
     const interestArray = [];
     const peopleArray = [];
     const ses = driver.session();
@@ -316,12 +317,30 @@ app.post('/sameinterests', async (req, res) => {
     const people = await session.run(`MATCH (P:Person),(I:Interest) WHERE ${queryString} MATCH (P)-[:Interested]->(I) RETURN COLLECT(DISTINCT P)`);
     people.records[0]._fields[0].forEach(field => {peopleArray.push(field.properties)});
     let delIndex;
+    session.close();
     for (let i = 0; i < peopleArray.length; i++) {
         if(peopleArray[i].username === username)
             delIndex = i;
         delete peopleArray[i].password;
     } 
     peopleArray.splice(delIndex,1);
+    for(let x=0;x<peopleArray.length;x++){
+        const addDist = async(people)=>{
+            const ses = driver.session();
+            const distance = await ses.run(`MATCH (p:Person{username:'${people.username}'})
+            WITH point({longitude:toFloat(p.longitude), latitude:toFloat(p.latitude)}) as p1, point({longitude:toFloat(${lon}),latitude:toFloat(${lat})}) as p2,p
+            WITH p,p1,p2,point.distance(p1,p2)/1000 as d
+            RETURN (d)`);
+            if(distance.records[0]._fields[0]!=null){
+                peopleArray[peopleArray.indexOf(people)].dist = (distance.records[0]._fields[0]).toFixed(2);
+            }
+            else{
+                peopleArray[peopleArray.indexOf(people)].dist = 'N/A';
+            }
+            ses.close();
+        }
+        await addDist(peopleArray[x]);
+    }
     return res.json({ peopleArray });
 })
 
