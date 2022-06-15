@@ -1,7 +1,7 @@
 version: '3'
 services:
   chatterbox-server:
-    image: abirbanerjee/chatterbox-server
+    image: abirbanerjee/chatterbox-server:latest
     volumes:
       - /usr/src/app
       - /usr/src/app/node_modules
@@ -9,7 +9,7 @@ services:
       - 5000:5000
     restart: always
   chatterbox-public:
-    image: abirbanerjee/chatterbox-public
+    image: abirbanerjee/chatterbox-public:latest
     volumes:
       - /usr/src/app/public/
     ports:
